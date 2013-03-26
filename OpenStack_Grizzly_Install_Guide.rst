@@ -403,7 +403,7 @@ Status: On Going Work
 
    service libvirt-bin restart
 
-6.1 Nova-*
+6.2 Nova-*
 ------------------
 
 * Start by installing nova components::
