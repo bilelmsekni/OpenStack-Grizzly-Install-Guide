@@ -4,7 +4,7 @@
 
 :Version: 0.1
 :Source: https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide
-:Keywords: Single node OpenStack, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, LinuxBridge, KVM, Ubuntu Server 12.10 (64 bits).
+:Keywords: Single node OpenStack, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, LinuxBridge, KVM, Ubuntu Server 12.04 (64 bits).
 
 Authors
 ==========
@@ -72,7 +72,7 @@ Status: On Going Work
 2.1. Preparing Ubuntu 12.10
 -----------------
 
-* After you install Ubuntu 12.10 Server 64bits, Go in sudo mode and don't leave it until the end of this guide::
+* After you install Ubuntu 12.04 Server 64bits, Go in sudo mode and don't leave it until the end of this guide::
 
    sudo su
 
