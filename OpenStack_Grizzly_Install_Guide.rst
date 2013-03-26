@@ -9,7 +9,7 @@
 Authors
 ==========
 
-Copyright (C) `Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ <bilel.msekni@telecom-sudparis.eu> && Sandeep Raman <sandeepr@hp.com>
+`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ <bilel.msekni@telecom-sudparis.eu> && Sandeep Raman <sandeepr@hp.com>
 
 Contributors
 ==========
@@ -47,7 +47,7 @@ Table of Contents
 
 OpenStack Grizzly Install Guide is an easy and tested way to create your own OpenStack platform. 
 
-Version 0.1
+If you like it, don't forget to star it !
 
 Status: On Going Work
 
