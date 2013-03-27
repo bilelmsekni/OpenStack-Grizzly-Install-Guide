@@ -9,7 +9,7 @@
 Authors
 ==========
 
-`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ && Sandeep Raman
+`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ <bilel.msekni@telecom-sudparis.eu>&& Sandeep J Raman <sandeepr@hp.com>
 
 Contributors
 ==========
@@ -307,7 +307,6 @@ Status: On Going Work
 
 * Edit the /etc/quantum/quantum.conf file::
 
-   log_dir = /var/log/quantum
    core_plugin = quantum.plugins.linuxbridge.lb_quantum_plugin.LinuxBridgePluginV2
    lock_path = /var/lock/quantum
    
