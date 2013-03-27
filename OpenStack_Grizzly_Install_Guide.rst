@@ -175,7 +175,7 @@ Status: On Going Work
    service keystone restart
    keystone-manage db_sync
 
-* Fill up the keystone database using the two scripts available in the `Scripts folder <https://github.com/mseknibilel/OpenStack-Grizzly-Install-guide/tree/master/Keystone_Scripts>`_ of this git repository::
+* Fill up the keystone database using the two scripts available in the `Scripts folder <https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/tree/master/KeystoneScripts>`_ of this git repository::
 
    #Modify the HOST_IP and HOST_IP_EXT variables before executing the scripts
 
@@ -583,7 +583,7 @@ Status: On Going Work
 
 * Verify if cinder services are running::
 
-   cd /etc/init.d/; for i in $( ls cinder-* ); do sudo service $i restart; done
+   cd /etc/init.d/; for i in $( ls cinder-* ); do sudo service $i status; done
 
 8. Horizon
 ===========
