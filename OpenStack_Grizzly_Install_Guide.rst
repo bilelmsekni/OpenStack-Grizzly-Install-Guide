@@ -328,10 +328,6 @@ Status: On Going Work
    tenant_network_type = vlan
    network_vlan_ranges = physnet1:1000:2999
 
-* Create a link to the linuxbridge_conf.ini file::
-
-   ln -s /etc/quantum/plugins/linuxbridge/linuxbridge_conf.ini /etc/quantum/plugin.ini
-
 * Edit the /etc/quantum/l3_agent.ini::
 
    interface_driver = quantum.agent.linux.interface.BridgeInterfaceDriver
