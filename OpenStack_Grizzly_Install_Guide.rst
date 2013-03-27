@@ -78,7 +78,8 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
+   add-apt-repository ppa:openstack-ubuntu-testing/grizzly-build-depends
+   add-apt-repository ppa:openstack-ubuntu-testing/grizzly-trunk-testing
    apt-get install ubuntu-cloud-keyring python-software-properties python-keyring
 
 * Update your system::
@@ -237,7 +238,6 @@ Status: On Going Work
 
    [filter:authtoken]
    paste.filter_factory = keystone.middleware.auth_token:filter_factory
-   delay_auth_decision = true
    auth_host = 100.10.10.51
    auth_port = 35357
    auth_protocol = http
@@ -431,6 +431,8 @@ Status: On Going Work
    admin_user = nova
    admin_password = service_pass
    signing_dirname = /tmp/keystone-signing-nova
+   # Workaround for https://bugs.launchpad.net/nova/+bug/1154809
+   auth_version = v2.0
 
 * Modify the /etc/nova/nova.conf like this::
 
