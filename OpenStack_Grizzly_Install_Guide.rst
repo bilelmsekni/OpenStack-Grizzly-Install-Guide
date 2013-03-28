@@ -616,7 +616,7 @@ To view a copy of this license, visit [ http://creativecommons.org/licenses/by/3
 
 Bilel Msekni  : bilel.msekni@telecom-sudparis.eu
 
-Sandeep Raman : sandeepr@hp.com
+Sandeep J Raman : sandeepr@hp.com
 
 11. Credits
 =================
