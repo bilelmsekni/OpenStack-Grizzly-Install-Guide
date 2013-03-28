@@ -2,14 +2,14 @@
   OpenStack Grizzly Install Guide
 ==========================================================
 
-:Version: 0.1
+:Version: 1.0
 :Source: https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide
-:Keywords: Single node OpenStack, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, LinuxBridge, KVM, Ubuntu Server 12.04 (64 bits).
+:Keywords: Single node OpenStack, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, OpenVSwitch, KVM, Ubuntu Server 12.04 (64 bits).
 
 Authors
 ==========
 
-`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ <bilel.msekni@telecom-sudparis.eu> && Sandeep J Raman <sandeepr@hp.com>
+`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ <bilel.msekni@telecom-sudparis.eu> 
 
 Contributors
 ==========
@@ -17,6 +17,7 @@ Contributors
 =================================================== =======================================================
 
  Houssem Medhioub <houssem.medhioub@it-sudparis.eu> Djamal Zeghlache <djamal.zeghlache@telecom-sudparis.eu>
+ Sandeep J Raman  <sandeepr@hp.com>
 
 =================================================== =======================================================
 
@@ -36,11 +37,12 @@ Table of Contents
   6. Nova
   7. Cinder
   8. Horizon
-  9. Licensing
-  10. Contacts
-  11. Acknowledgement
-  12. Credits
-  13. To do
+  9. Your first VM
+  10. Licensing
+  11. Contacts
+  12. Acknowledgement
+  13. Credits
+  14. To do
 
 0. What is it?
 ==============
@@ -290,9 +292,27 @@ Status: On Going Work
 5. Quantum
 =============
 
+5.1. OpenVSwitch
+------------------
+
+* Install the openVSwitch::
+
+   apt-get install -y openvswitch-switch openvswitch-datapath-dkms
+
+* Create the bridges::
+
+   #br-int will be used for VM integration	
+   ovs-vsctl add-br br-int
+
+   #br-ex is used to make to access the internet (not covered in this guide)
+   ovs-vsctl add-br br-ex
+
+5.2. Quantum-*
+------------------
+
 * Install the Quantum components::
 
-   apt-get install -y quantum-server quantum-plugin-linuxbridge quantum-plugin-linuxbridge-agent dnsmasq quantum-dhcp-agent quantum-l3-agent 
+   apt-get install -y quantum-server quantum-plugin-openvswitch quantum-plugin-openvswitch-agent dnsmasq quantum-dhcp-agent quantum-l3-agent 
 
 * Create a database::
 
@@ -304,10 +324,6 @@ Status: On Going Work
 * Verify all Quantum components are running::
 
    cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i status; done
-
-* Edit the /etc/quantum/quantum.conf file::
-
-   core_plugin = quantum.plugins.linuxbridge.lb_quantum_plugin.LinuxBridgePluginV2
    
 * Edit /etc/quantum/api-paste.ini ::
 
@@ -320,17 +336,22 @@ Status: On Going Work
    admin_user = quantum
    admin_password = service_pass
 
-* Edit the LinuxBridge plugin config file /etc/quantum/plugins/linuxbridge/linuxbridge_conf.ini with:: 
+* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with::: 
 
+   #Under the database section
+   [DATABASE]
    sql_connection = mysql://quantumUser:quantumPass@100.10.10.51/quantum
-   physical_interface_mappings = physnet1:eth1
-   tenant_network_type = vlan
-   network_vlan_ranges = physnet1:1000:2999
+
+   #Under the OVS section
+   [OVS]
+   tenant_network_type = gre
+   tunnel_id_ranges = 1:1000
+   integration_bridge = br-int
+   tunnel_bridge = br-tun
+   local_ip = 100.10.10.51
+   enable_tunneling = True
 
 * Edit the /etc/quantum/l3_agent.ini::
-
-   interface_driver = quantum.agent.linux.interface.BridgeInterfaceDriver
-   use_namespaces = False
 
    # Paste this at the end of the file
 
@@ -340,10 +361,22 @@ Status: On Going Work
    admin_user = quantum
    admin_password = service_pass
 
-* Edit the /etc/quantum/dhcp_agent.ini::
+* Update /etc/quantum/metadata_agent.ini
 
-   interface_driver = quantum.agent.linux.interface.BridgeInterfaceDriver
-   use_namespaces = False
+   # The Quantum user information for accessing the Quantum API.
+   auth_url = http://100.10.10.51:35357/v2.0
+   auth_region = RegionOne
+   admin_tenant_name = service
+   admin_user = quantum
+   admin_password = service_pass
+
+   # IP address used by Nova metadata server
+   nova_metadata_ip = 127.0.0.1
+
+   # TCP Port used by Nova metadata server
+   nova_metadata_port = 8775
+
+   metadata_proxy_shared_secret = helloOpenStack
 
 * Restart all quantum services::
 
@@ -431,7 +464,7 @@ Status: On Going Work
 
 * Modify the /etc/nova/nova.conf like this::
 
-   [DEFAULT]
+   [DEFAULT] 
    logdir=/var/log/nova
    state_path=/var/lib/nova
    lock_path=/run/lock/nova
@@ -466,13 +499,20 @@ Status: On Going Work
    quantum_admin_username=quantum
    quantum_admin_password=service_pass
    quantum_admin_auth_url=http://100.10.10.51:35357/v2.0
-   libvirt_vif_driver=nova.virt.libvirt.vif.QuantumLinuxBridgeVIFDriver
-   linuxnet_interface_driver=nova.network.linux_net.LinuxBridgeInterfaceDriver
+   libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
+   linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
    firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
+   
+   #Metadata
+   service_quantum_metadata_proxy = True
+   quantum_metadata_proxy_shared_secret = helloOpenStack
+   metadata_host = 100.10.10.51
+   metadata_listen = 127.0.0.1
+   metadata_listen_port = 8775
 
    # Compute #
    compute_driver=libvirt.LibvirtDriver
-  
+
    # Cinder #
    volume_api_class=nova.volume.cinder.API
    osapi_volume_listen_port=5900
@@ -481,9 +521,10 @@ Status: On Going Work
 
    [DEFAULT]
    libvirt_type=kvm
-   compute_driver=libvirt.LibvirtDriver
+   libvirt_ovs_bridge=br-int
    libvirt_vif_type=ethernet
-   libvirt_vif_driver=nova.virt.libvirt.vif.QuantumLinuxBridgeVIFDriver
+   libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
+   libvirt_use_virtio_for_bridges=True
     
 * Synchronize your database::
 
@@ -598,7 +639,44 @@ Status: On Going Work
 
 You can now access your OpenStack **192.168.100.51/horizon** with credentials **admin:admin_pass**.
 
-9. Licensing
+9. Your first VM
+================
+
+To start your first VM, we first need to create a new tenant, user and internal network.
+
+* Create a new tenant ::
+
+   keystone tenant-create --name project_one
+
+* Create a new user and assign the member role to it in the new tenant (keystone role-list to get the appropriate id)::
+
+   keystone user-create --name=user_one --pass=user_one --tenant-id $put_id_of_project_one --email=user_one@domain.com
+   keystone user-role-add --tenant-id $put_id_of_project_one  --user-id $put_id_of_user_one --role-id $put_id_of_member_role
+
+* Create a new network for the tenant::
+
+   quantum net-create --tenant-id $put_id_of_project_one net_proj_one 
+
+* Create a new subnet inside the new tenant network::
+
+   quantum subnet-create --tenant-id $put_id_of_project_one net_proj_one 50.50.1.0/24
+
+* Create a router for the new tenant::
+
+   quantum router-create --tenant-id $put_id_of_project_one router_proj_one
+
+* Add the router to the running l3 agent::
+
+   quantum agent-list (to get the l3 agent ID)
+   quantum l3-agent-router-add $l3_agent_ID router_proj_one
+
+* Add the router to the subnet::
+
+   quantum router-interface-add $put_router_proj_one_id_here $put_subnet_id_here
+
+That's it ! Log on to your dashboard, create your secure key and modify your security groups then create your first VM.
+
+10. Licensing
 ============
 
 OpenStack Grizzly Install Guide is licensed under a Creative Commons Attribution 3.0 Unported License.
@@ -606,29 +684,24 @@ OpenStack Grizzly Install Guide is licensed under a Creative Commons Attribution
 .. image:: http://i.imgur.com/4XWrp.png
 To view a copy of this license, visit [ http://creativecommons.org/licenses/by/3.0/deed.en_US ].
 
-10. Contacts
+11. Contacts
 ===========
 
 Bilel Msekni  : bilel.msekni@telecom-sudparis.eu
 
-Sandeep J Raman : sandeepr@hp.com
-
-11. Credits
+12. Credits
 =================
 
 This work has been based on:
 
 * Bilel Msekni's Folsom Install guide [https://github.com/mseknibilel/OpenStack-Folsom-Install-guide]
+* OpenStack Grizzly Install Guide (Master Branch) [https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide]
 
-
-12. To do
+13. To do
 =======
 
 This guide is just a startup. Your suggestions are always welcomed.
 
-Some of this guide's needs might be:
-
-* 
 
 
 
