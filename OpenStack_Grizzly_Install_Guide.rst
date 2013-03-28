@@ -308,7 +308,6 @@ Status: On Going Work
 * Edit the /etc/quantum/quantum.conf file::
 
    core_plugin = quantum.plugins.linuxbridge.lb_quantum_plugin.LinuxBridgePluginV2
-   lock_path = /var/lock/quantum
    
 * Edit /etc/quantum/api-paste.ini ::
 
