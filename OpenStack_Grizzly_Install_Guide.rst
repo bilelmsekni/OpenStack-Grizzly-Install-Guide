@@ -361,7 +361,7 @@ Status: On Going Work
    admin_user = quantum
    admin_password = service_pass
 
-* Update /etc/quantum/metadata_agent.ini
+* Update /etc/quantum/metadata_agent.ini::
 
    # The Quantum user information for accessing the Quantum API.
    auth_url = http://100.10.10.51:35357/v2.0
