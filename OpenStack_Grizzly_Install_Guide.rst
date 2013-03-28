@@ -674,6 +674,10 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
    quantum router-interface-add $put_router_proj_one_id_here $put_subnet_id_here
 
+* Restart all quantum services::
+
+   cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
+
 That's it ! Log on to your dashboard, create your secure key and modify your security groups then create your first VM.
 
 10. Licensing
