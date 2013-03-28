@@ -598,7 +598,48 @@ Status: On Going Work
 
 You can now access your OpenStack **192.168.100.51/horizon** with credentials **admin:admin_pass**.
 
-9. Licensing
+9. Your first VM
+================
+
+To start your first VM, we first need to create a new tenant, user and internal network.
+
+* Create a new tenant ::
+
+   keystone tenant-create --name project_one
+
+* Create a new user and assign the member role to it in the new tenant (keystone role-list to get the appropriate id)::
+
+   keystone user-create --name=user_one --pass=user_one --tenant-id $put_id_of_project_one --email=user_one@domain.com
+   keystone user-role-add --tenant-id $put_id_of_project_one  --user-id $put_id_of_user_one --role-id $put_id_of_member_role
+
+* Create a new network for the tenant::
+
+   quantum net-create --tenant-id $put_id_of_project_one net_proj_one 
+
+* Create a new subnet inside the new tenant network::
+
+   quantum subnet-create --tenant-id $put_id_of_project_one net_proj_one 50.50.1.0/24
+
+* Create a router for the new tenant::
+
+   quantum router-create --tenant-id $put_id_of_project_one router_proj_one
+
+* Add the router to the running l3 agent::
+
+   quantum agent-list (to get the l3 agent ID)
+   quantum l3-agent-router-add $l3_agent_ID router_proj_one
+
+* Add the router to the subnet::
+
+   quantum router-interface-add $put_router_proj_one_id_here $put_subnet_id_here
+
+* Restart all quantum services::
+
+   cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
+
+That's it ! Log on to your dashboard, create your secure key and modify your security groups then create your first VM.
+
+10. Licensing
 ============
 
 OpenStack Grizzly Install Guide is licensed under a Creative Commons Attribution 3.0 Unported License.
@@ -606,14 +647,14 @@ OpenStack Grizzly Install Guide is licensed under a Creative Commons Attribution
 .. image:: http://i.imgur.com/4XWrp.png
 To view a copy of this license, visit [ http://creativecommons.org/licenses/by/3.0/deed.en_US ].
 
-10. Contacts
+11. Contacts
 ===========
 
 Bilel Msekni  : bilel.msekni@telecom-sudparis.eu
 
 Sandeep J Raman : sandeepr@hp.com
 
-11. Credits
+12. Credits
 =================
 
 This work has been based on:
@@ -621,14 +662,11 @@ This work has been based on:
 * Bilel Msekni's Folsom Install guide [https://github.com/mseknibilel/OpenStack-Folsom-Install-guide]
 
 
-12. To do
+13. To do
 =======
 
 This guide is just a startup. Your suggestions are always welcomed.
-
-Some of this guide's needs might be:
-
-* 
+ 
 
 
 
