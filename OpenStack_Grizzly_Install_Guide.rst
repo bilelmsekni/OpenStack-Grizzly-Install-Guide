@@ -36,11 +36,12 @@ Table of Contents
   6. Nova
   7. Cinder
   8. Horizon
-  9. Licensing
-  10. Contacts
-  11. Acknowledgement
-  12. Credits
-  13. To do
+  9. Your first VM
+  10. Licensing
+  11. Contacts
+  12. Acknowledgement
+  13. Credits
+  14. To do
 
 0. What is it?
 ==============
