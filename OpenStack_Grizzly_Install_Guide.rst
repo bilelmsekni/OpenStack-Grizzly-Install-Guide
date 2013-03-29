@@ -71,7 +71,7 @@ Status: On Going Work
 2. Preparing your node
 ===============
 
-2.1. Preparing Ubuntu 12.10
+2.1. Preparing Ubuntu
 -----------------
 
 * After you install Ubuntu 12.04 Server 64bits, Go in sudo mode and don't leave it until the end of this guide::
