@@ -11,5 +11,5 @@ It's easy, simple and tested. Can't wait? Go check it out by yourself:
 Guide Branch  | Single/Multi Node | Quantum plugin  | Direct Guide Link                                                                                              |
 ------------- | ----------------- | --------------- | ------------------                                                                                             |
 master        | Single            | Linux Bridge    | https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/blob/master/OpenStack_Grizzly_Install_Guide.rst |
-Content Cell  | Content Cell      | OpenVSwitch     | test                                                                                                           |
+OVS_SingleNode| Single            | OpenVSwitch     | https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/blob/OVS_SingleNode/OpenStack_Grizzly_Install_Guide.rst |
 
