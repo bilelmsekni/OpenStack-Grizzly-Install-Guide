@@ -9,7 +9,7 @@
 Authors
 ==========
 
-`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ <bilel.msekni@telecom-sudparis.eu> && Sandeep J Raman <sandeepr@hp.com>
+`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ <bilel.msekni@telecom-sudparis.eu> && Sandeep Raman <sandeepr@hp.com>
 
 Contributors
 ==========
@@ -115,7 +115,7 @@ Status: On Going Work
 2.3. MySQL & RabbitMQ
 ------------
 
-* Install MySQL::
+* Install MySQL and specify a password for the root user::
 
    apt-get install -y mysql-server python-mysqldb
 
