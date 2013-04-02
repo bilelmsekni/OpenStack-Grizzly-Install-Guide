@@ -625,10 +625,9 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
    quantum router-create --tenant-id $put_id_of_project_one router_proj_one
 
-* Add the router to the running l3 agent::
+* Edit the /etc/quantum/l3_agent.ini to update the router_id's variable::
 
-   quantum agent-list (to get the l3 agent ID)
-   quantum l3-agent-router-add $l3_agent_ID router_proj_one
+   router_id = $router_proj_one_id
 
 * Add the router to the subnet::
 
