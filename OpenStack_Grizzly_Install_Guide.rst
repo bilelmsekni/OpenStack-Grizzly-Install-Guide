@@ -17,7 +17,7 @@ Contributors
 =================================================== =======================================================
 
  Houssem Medhioub <houssem.medhioub@it-sudparis.eu> Djamal Zeghlache <djamal.zeghlache@telecom-sudparis.eu>
- Sandeep J Raman  <sandeepr@hp.com>
+ Sandeep Raman  <sandeepr@hp.com>
 
 =================================================== =======================================================
 
