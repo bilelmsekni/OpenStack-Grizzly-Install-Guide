@@ -18,7 +18,7 @@ Contributors
 
  Houssem Medhioub <houssem.medhioub@it-sudparis.eu> Djamal Zeghlache <djamal.zeghlache@telecom-sudparis.eu>
 
- Sam Stoelinga 
+ Sam Stoelinga <sammiestoel@gmail.com>
 
 =================================================== =======================================================
 
