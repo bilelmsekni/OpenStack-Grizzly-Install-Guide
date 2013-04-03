@@ -58,7 +58,7 @@ Status: On Going Work
 ====================
 
 :Node Role: NICs
-:Single Node: eth0 (100.10.10.51), eth1 (192.168.100.51)
+:Single Node: eth0 (10.10.100.51), eth1 (192.168.100.51)
 
 **Note 1:** More guides for multi node deployments will be available soon.
 
@@ -106,7 +106,7 @@ Status: On Going Work
    #Not internet connected(used for OpenStack management)
    auto eth0
    iface eth0 inet static
-   address 100.10.10.51
+   address 10.10.100.51
    netmask 255.255.255.0
 
 * Restart the networking service::
@@ -167,7 +167,7 @@ Status: On Going Work
 
 * Adapt the connection attribute in the /etc/keystone/keystone.conf to the new database::
 
-   connection = mysql://keystoneUser:keystonePass@100.10.10.51/keystone
+   connection = mysql://keystoneUser:keystonePass@10.10.100.51/keystone
 
 * Modify the keystone token type in the /etc/keystone/keystone.conf::
 
@@ -229,7 +229,7 @@ Status: On Going Work
    [filter:authtoken]
    paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    delay_auth_decision = true
-   auth_host = 100.10.10.51
+   auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
@@ -240,7 +240,7 @@ Status: On Going Work
 
    [filter:authtoken]
    paste.filter_factory = keystone.middleware.auth_token:filter_factory
-   auth_host = 100.10.10.51
+   auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
@@ -249,7 +249,7 @@ Status: On Going Work
 
 * Update /etc/glance/glance-api.conf with::
 
-   sql_connection = mysql://glanceUser:glancePass@100.10.10.51/glance
+   sql_connection = mysql://glanceUser:glancePass@10.10.100.51/glance
 
 * And::
 
@@ -258,7 +258,7 @@ Status: On Going Work
    
 * Update the /etc/glance/glance-registry.conf with::
 
-   sql_connection = mysql://glanceUser:glancePass@100.10.10.51/glance
+   sql_connection = mysql://glanceUser:glancePass@10.10.100.51/glance
 
 * And::
 
@@ -329,7 +329,7 @@ Status: On Going Work
 
    [filter:authtoken]
    paste.filter_factory = keystone.middleware.auth_token:filter_factory
-   auth_host = 100.10.10.51
+   auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
@@ -340,7 +340,7 @@ Status: On Going Work
 
    #Under the database section
    [DATABASE]
-   sql_connection = mysql://quantumUser:quantumPass@100.10.10.51/quantum
+   sql_connection = mysql://quantumUser:quantumPass@10.10.100.51/quantum
 
    #Under the OVS section
    [OVS]
@@ -348,14 +348,14 @@ Status: On Going Work
    tunnel_id_ranges = 1:1000
    integration_bridge = br-int
    tunnel_bridge = br-tun
-   local_ip = 100.10.10.51
+   local_ip = 10.10.100.51
    enable_tunneling = True
 
 * Edit the /etc/quantum/l3_agent.ini::
 
    # Paste this at the end of the file
 
-   auth_url = http://100.10.10.51:35357/v2.0 
+   auth_url = http://10.10.100.51:35357/v2.0 
    auth_region = RegionOne
    admin_tenant_name = service
    admin_user = quantum
@@ -364,7 +364,7 @@ Status: On Going Work
 * Update /etc/quantum/metadata_agent.ini::
 
    # The Quantum user information for accessing the Quantum API.
-   auth_url = http://100.10.10.51:35357/v2.0
+   auth_url = http://10.10.100.51:35357/v2.0
    auth_region = RegionOne
    admin_tenant_name = service
    admin_user = quantum
@@ -452,7 +452,7 @@ Status: On Going Work
 
    [filter:authtoken]
    paste.filter_factory = keystone.middleware.auth_token:filter_factory
-   auth_host = 100.10.10.51
+   auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
@@ -471,9 +471,9 @@ Status: On Going Work
    verbose=True
    api_paste_config=/etc/nova/api-paste.ini
    compute_scheduler_driver=nova.scheduler.simple.SimpleScheduler
-   rabbit_host=100.10.10.51
-   nova_url=http://100.10.10.51:8774/v1.1/
-   sql_connection=mysql://novaUser:novaPass@100.10.10.51/nova
+   rabbit_host=10.10.100.51
+   nova_url=http://10.10.100.51:8774/v1.1/
+   sql_connection=mysql://novaUser:novaPass@10.10.100.51/nova
    root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 
    # Auth
@@ -481,24 +481,24 @@ Status: On Going Work
    auth_strategy=keystone
 
    # Imaging service
-   glance_api_servers=100.10.10.51:9292
+   glance_api_servers=10.10.100.51:9292
    image_service=nova.image.glance.GlanceImageService
 
    # Vnc configuration
    novnc_enabled=true
    novncproxy_base_url=http://192.168.100.51:6080/vnc_auto.html
    novncproxy_port=6080
-   vncserver_proxyclient_address=100.10.10.51
+   vncserver_proxyclient_address=10.10.100.51
    vncserver_listen=0.0.0.0
 
    # Network settings
    network_api_class=nova.network.quantumv2.api.API
-   quantum_url=http://100.10.10.51:9696
+   quantum_url=http://10.10.100.51:9696
    quantum_auth_strategy=keystone
    quantum_admin_tenant_name=service
    quantum_admin_username=quantum
    quantum_admin_password=service_pass
-   quantum_admin_auth_url=http://100.10.10.51:35357/v2.0
+   quantum_admin_auth_url=http://10.10.100.51:35357/v2.0
    libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
    linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
    firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
@@ -506,7 +506,7 @@ Status: On Going Work
    #Metadata
    service_quantum_metadata_proxy = True
    quantum_metadata_proxy_shared_secret = helloOpenStack
-   metadata_host = 100.10.10.51
+   metadata_host = 10.10.100.51
    metadata_listen = 127.0.0.1
    metadata_listen_port = 8775
 
@@ -568,7 +568,7 @@ Status: On Going Work
    service_protocol = http
    service_host = 192.168.100.51
    service_port = 5000
-   auth_host = 100.10.10.51
+   auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
@@ -579,7 +579,7 @@ Status: On Going Work
 
    [DEFAULT]
    rootwrap_config=/etc/cinder/rootwrap.conf
-   sql_connection = mysql://cinderUser:cinderPass@100.10.10.51/cinder
+   sql_connection = mysql://cinderUser:cinderPass@10.10.100.51/cinder
    api_paste_config = /etc/cinder/api-paste.ini
    iscsi_helper=ietadm
    volume_name_template = volume-%s
