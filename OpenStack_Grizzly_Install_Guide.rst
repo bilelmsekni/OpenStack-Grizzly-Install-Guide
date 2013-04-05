@@ -4,7 +4,7 @@
 
 :Version: 1.0
 :Source: https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide
-:Keywords: Single node OpenStack, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, OpenVSwitch, KVM, Ubuntu Server 12.04 (64 bits).
+:Keywords: Multi node, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, OpenVSwitch, KVM, Ubuntu Server 12.04 (64 bits).
 
 Authors
 ==========
@@ -17,7 +17,7 @@ Contributors
 =================================================== =======================================================
 
  Houssem Medhioub <houssem.medhioub@it-sudparis.eu> Djamal Zeghlache <djamal.zeghlache@telecom-sudparis.eu>
- Sandeep Raman  <sandeepr@hp.com>
+ Sandeep Raman  <sandeepr@hp.com>		    Sam Stoelinga <sammiestoel@gmail.com>
 
 =================================================== =======================================================
 
