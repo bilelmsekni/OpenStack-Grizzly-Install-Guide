@@ -81,8 +81,7 @@ Status: On Going Work
 * Add Grizzly repositories::
 
    apt-get install ubuntu-cloud-keyring python-software-properties software-properties-common python-keyring
-   add-apt-repository ppa:openstack-ubuntu-testing/grizzly-build-depends
-   add-apt-repository ppa:openstack-ubuntu-testing/grizzly-trunk-testing
+   echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 * Update your system::
 
