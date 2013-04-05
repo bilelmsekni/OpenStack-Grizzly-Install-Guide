@@ -81,7 +81,7 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install ubuntu-cloud-keyring python-software-properties python-keyring
+   apt-get install ubuntu-cloud-keyring python-software-properties software-properties-common python-keyring
    add-apt-repository ppa:openstack-ubuntu-testing/grizzly-build-depends
    add-apt-repository ppa:openstack-ubuntu-testing/grizzly-trunk-testing
 
