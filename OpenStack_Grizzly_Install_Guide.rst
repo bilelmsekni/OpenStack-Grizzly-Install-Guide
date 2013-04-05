@@ -9,7 +9,7 @@
 Authors
 ==========
 
-`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ <bilel.msekni@telecom-sudparis.eu> 
+`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ 
 
 Contributors
 ==========
@@ -30,19 +30,14 @@ Table of Contents
 
   0. What is it?
   1. Requirements
-  2. Preparing your node
-  3. Keystone
-  4. Glance
-  5. Quantum
-  6. Nova
-  7. Cinder
-  8. Horizon
-  9. Your first VM
-  10. Licensing
-  11. Contacts
-  12. Acknowledgement
-  13. Credits
-  14. To do
+  2. Controller Node
+  3. Network Node
+  4. Compute Node
+  5. Your first VM
+  6. Licensing
+  7. Contacts
+  8. Credits
+  9. To do
 
 0. What is it?
 ==============
@@ -58,17 +53,17 @@ Status: On Going Work
 ====================
 
 :Node Role: NICs
-:Single Node: eth0 (10.10.100.51), eth1 (192.168.100.51)
+:Control Node: eth0 (100.10.10.51), eth1 (192.168.100.51)
+:Network Node: eth0 (100.10.10.52), eth1 (100.20.20.52), eth2 (192.168.100.52)
+:Compute Node: eth0 (100.10.10.53), eth1 (100.20.20.53)
 
-**Note 1:** More guides for multi node deployments will be available soon.
+**Note 1:** Always use dpkg -s <packagename> to make sure you are using grizzly packages (version : 2013.1)
 
-**Note 2:** Always use dpkg -s <packagename> to make sure you are using grizzly packages (version : 2013.1)
-
-**Note 3:** This is my current network architecture, you can add as many compute node as you wish.
+**Note 2:** This is my current network architecture, you can add as many compute node as you wish.
 
 .. image:: http://i.imgur.com/dOIjEbd.jpg
 
-2. Preparing your node
+2. Controller Node
 ===============
 
 2.1. Preparing Ubuntu
@@ -90,7 +85,7 @@ Status: On Going Work
    apt-get upgrade
    apt-get dist-upgrade
 
-2.2.Networking
+2.2. Networking
 ------------
 
 * Only one NIC should have an internet access::
@@ -106,7 +101,7 @@ Status: On Going Work
    #Not internet connected(used for OpenStack management)
    auto eth0
    iface eth0 inet static
-   address 10.10.100.51
+   address 10.10.10.51
    netmask 255.255.255.0
 
 * Restart the networking service::
@@ -124,6 +119,36 @@ Status: On Going Work
 
    sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
    service mysql restart
+
+* Create these databases::
+
+   mysql -u root -p
+   
+   #Keystone
+   CREATE DATABASE keystone;
+   GRANT ALL ON keystone.* TO 'keystoneUser'@'%' IDENTIFIED BY 'keystonePass';
+   
+   #Glance
+   CREATE DATABASE glance;
+   GRANT ALL ON glance.* TO 'glanceUser'@'%' IDENTIFIED BY 'glancePass';
+
+   #Quantum
+   CREATE DATABASE quantum;
+   GRANT ALL ON quantum.* TO 'quantumUser'@'%' IDENTIFIED BY 'quantumPass';
+
+   #Nova
+   CREATE DATABASE nova;
+   GRANT ALL ON nova.* TO 'novaUser'@'%' IDENTIFIED BY 'novaPass';      
+   quit;
+
+   #Cinder
+   CREATE DATABASE cinder;
+   GRANT ALL ON cinder.* TO 'cinderUser'@'%' IDENTIFIED BY 'cinderPass';
+
+   quit;
+
+2.4. RabbitMQ
+-------------------
 
 * Install RabbitMQ::
 
@@ -147,31 +172,16 @@ Status: On Going Work
    # To save you from rebooting, perform the following
    sysctl net.ipv4.ip_forward=1
 
-3. Keystone
-=============
+2.6. Keystone
+-------------------
 
 * Start by the keystone packages::
 
    apt-get install -y keystone
 
-* Verify your keystone is running::
-
-   service keystone status
-
-* Create a new MySQL database for keystone::
-
-   mysql -u root -p
-   CREATE DATABASE keystone;
-   GRANT ALL ON keystone.* TO 'keystoneUser'@'%' IDENTIFIED BY 'keystonePass';
-   quit;
-
 * Adapt the connection attribute in the /etc/keystone/keystone.conf to the new database::
 
-   connection = mysql://keystoneUser:keystonePass@10.10.100.51/keystone
-
-* Modify the keystone token type in the /etc/keystone/keystone.conf::
-
-   token_format = UUID
+   connection = mysql://keystoneUser:keystonePass@10.10.10.51/keystone
 
 * Restart the identity service then synchronize the database::
 
@@ -180,7 +190,7 @@ Status: On Going Work
 
 * Fill up the keystone database using the two scripts available in the `Scripts folder <https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/tree/master/KeystoneScripts>`_ of this git repository::
 
-   #Modify the HOST_IP and HOST_IP_EXT variables before executing the scripts
+   #Modify the **HOST_IP** and **HOST_IP_EXT** variables before executing the scripts
 
    chmod +x keystone_basic.sh
    chmod +x keystone_endpoints_basic.sh
@@ -205,31 +215,19 @@ Status: On Going Work
 
    keystone user-list
 
-4. Glance
-=============
+2.7. Glance
+-------------------
 
 * We Move now to Glance installation::
 
    apt-get install -y glance
-
-* Verify your glance services are running::
-
-   service glance-api status
-   service glance-registry status
-
-* Create a new MySQL database for Glance::
-
-   mysql -u root -p
-   CREATE DATABASE glance;
-   GRANT ALL ON glance.* TO 'glanceUser'@'%' IDENTIFIED BY 'glancePass';
-   quit;
 
 * Update /etc/glance/glance-api-paste.ini with::
 
    [filter:authtoken]
    paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    delay_auth_decision = true
-   auth_host = 10.10.100.51
+   auth_host = 10.10.10.51
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
@@ -240,7 +238,7 @@ Status: On Going Work
 
    [filter:authtoken]
    paste.filter_factory = keystone.middleware.auth_token:filter_factory
-   auth_host = 10.10.100.51
+   auth_host = 10.10.10.51
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
@@ -249,7 +247,7 @@ Status: On Going Work
 
 * Update /etc/glance/glance-api.conf with::
 
-   sql_connection = mysql://glanceUser:glancePass@10.10.100.51/glance
+   sql_connection = mysql://glanceUser:glancePass@10.10.10.51/glance
 
 * And::
 
@@ -258,7 +256,7 @@ Status: On Going Work
    
 * Update the /etc/glance/glance-registry.conf with::
 
-   sql_connection = mysql://glanceUser:glancePass@10.10.100.51/glance
+   sql_connection = mysql://glanceUser:glancePass@10.10.10.51/glance
 
 * And::
 
@@ -273,10 +271,6 @@ Status: On Going Work
 
    glance-manage db_sync
 
-* Restart the services again to take into account the new modifications::
-
-   service glance-registry restart; service glance-api restart
-
 * To test Glance, start by downloading the cirros cloud image to your node and then upload it to Glance::
 
    mkdir images
@@ -289,170 +283,52 @@ Status: On Going Work
 
    glance image-list
 
-5. Quantum
-=============
+2.8. Quantum
+-------------------
 
-5.1. OpenVSwitch
-------------------
+* Install the Quantum server and the OpenVSwitch package collection::
 
-* Install the openVSwitch::
+   apt-get install quantum-server quantum-plugin-openvswitch
 
-   apt-get install -y openvswitch-switch openvswitch-datapath-dkms
+* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with:: 
 
-* Create the bridges::
+   #Under the database section
+   [DATABASE]
+   sql_connection = mysql://quantumUser:quantumPass@10.10.10.51/quantum
 
-   #br-int will be used for VM integration	
-   ovs-vsctl add-br br-int
+   #Under the OVS section
+   [OVS]
+   tenant_network_type = gre
+   tunnel_id_ranges = 1:1000
+   enable_tunneling = True
 
-   #br-ex is used to make to access the internet (not covered in this guide)
-   ovs-vsctl add-br br-ex
-
-5.2. Quantum-*
-------------------
-
-* Install the Quantum components::
-
-   apt-get install -y quantum-server quantum-plugin-openvswitch quantum-plugin-openvswitch-agent dnsmasq quantum-dhcp-agent quantum-l3-agent 
-
-* Create a database::
-
-   mysql -u root -p
-   CREATE DATABASE quantum;
-   GRANT ALL ON quantum.* TO 'quantumUser'@'%' IDENTIFIED BY 'quantumPass';
-   quit; 
-
-* Verify all Quantum components are running::
-
-   cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i status; done
-   
 * Edit /etc/quantum/api-paste.ini ::
 
    [filter:authtoken]
    paste.filter_factory = keystone.middleware.auth_token:filter_factory
-   auth_host = 10.10.100.51
+   auth_host = 10.10.10.51
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
    admin_user = quantum
    admin_password = service_pass
 
-* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with::: 
+* Restart the quantum server::
 
-   #Under the database section
-   [DATABASE]
-   sql_connection = mysql://quantumUser:quantumPass@10.10.100.51/quantum
+   service quantum-server restart
 
-   #Under the OVS section
-   [OVS]
-   tenant_network_type = gre
-   tunnel_id_ranges = 1:1000
-   integration_bridge = br-int
-   tunnel_bridge = br-tun
-   local_ip = 10.10.100.51
-   enable_tunneling = True
-
-* Edit the /etc/quantum/l3_agent.ini::
-
-   # Paste this at the end of the file
-
-   auth_url = http://10.10.100.51:35357/v2.0 
-   auth_region = RegionOne
-   admin_tenant_name = service
-   admin_user = quantum
-   admin_password = service_pass
-
-* Update /etc/quantum/metadata_agent.ini::
-
-   # The Quantum user information for accessing the Quantum API.
-   auth_url = http://10.10.100.51:35357/v2.0
-   auth_region = RegionOne
-   admin_tenant_name = service
-   admin_user = quantum
-   admin_password = service_pass
-
-   # IP address used by Nova metadata server
-   nova_metadata_ip = 127.0.0.1
-
-   # TCP Port used by Nova metadata server
-   nova_metadata_port = 8775
-
-   metadata_proxy_shared_secret = helloOpenStack
-
-* Restart all quantum services::
-
-   cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
-   service dnsmasq restart
-
-6. Nova
-===========
-
-6.1 KVM
-------------------
-
-* make sure that your hardware enables virtualization::
-
-   apt-get install cpu-checker
-   kvm-ok
-
-* Normally you would get a good response. Now, move to install kvm and configure it::
-
-   apt-get install -y kvm libvirt-bin pm-utils
-
-* Edit the cgroup_device_acl array in the /etc/libvirt/qemu.conf file to::
-
-   cgroup_device_acl = [
-   "/dev/null", "/dev/full", "/dev/zero",
-   "/dev/random", "/dev/urandom",
-   "/dev/ptmx", "/dev/kvm", "/dev/kqemu",
-   "/dev/rtc", "/dev/hpet","/dev/net/tun"
-   ]
-
-* Delete default virtual bridge ::
-
-   virsh net-destroy default
-   virsh net-undefine default
-
-* Enable live migration by updating /etc/libvirt/libvirtd.conf file::
-
-   listen_tls = 0
-   listen_tcp = 1
-   auth_tcp = "none"
-
-* Edit libvirtd_opts variable in /etc/init/libvirt-bin.conf file::
-
-   env libvirtd_opts="-d -l"
-
-* Edit /etc/default/libvirt-bin file ::
-
-   libvirtd_opts="-d -l"
-
-* Restart the libvirt service to load the new values::
-
-   service libvirt-bin restart
-
-6.2 Nova-*
+2.9. Nova
 ------------------
 
 * Start by installing nova components::
 
-   apt-get install -y nova-api nova-cert novnc nova-consoleauth nova-scheduler nova-novncproxy nova-doc nova-conductor nova-compute-kvm
-
-* Check the status of all nova-services::
-
-   cd /etc/init.d/; for i in $( ls nova-* ); do service $i status; cd; done
-
-* Prepare a Mysql database for Nova::
-
-   mysql -u root -p
-   CREATE DATABASE nova;
-   GRANT ALL ON nova.* TO 'novaUser'@'%' IDENTIFIED BY 'novaPass';
-   quit;
+   apt-get install -y nova-api nova-cert novnc nova-consoleauth nova-scheduler nova-novncproxy nova-doc nova-conductor
 
 * Now modify authtoken section in the /etc/nova/api-paste.ini file to this::
 
    [filter:authtoken]
    paste.filter_factory = keystone.middleware.auth_token:filter_factory
-   auth_host = 10.10.100.51
+   auth_host = 10.10.10.51
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
@@ -471,9 +347,9 @@ Status: On Going Work
    verbose=True
    api_paste_config=/etc/nova/api-paste.ini
    compute_scheduler_driver=nova.scheduler.simple.SimpleScheduler
-   rabbit_host=10.10.100.51
-   nova_url=http://10.10.100.51:8774/v1.1/
-   sql_connection=mysql://novaUser:novaPass@10.10.100.51/nova
+   rabbit_host=10.10.10.51
+   nova_url=http://10.10.10.51:8774/v1.1/
+   sql_connection=mysql://novaUser:novaPass@10.10.10.51/nova
    root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 
    # Auth
@@ -481,24 +357,24 @@ Status: On Going Work
    auth_strategy=keystone
 
    # Imaging service
-   glance_api_servers=10.10.100.51:9292
+   glance_api_servers=10.10.10.51:9292
    image_service=nova.image.glance.GlanceImageService
 
    # Vnc configuration
    novnc_enabled=true
    novncproxy_base_url=http://192.168.100.51:6080/vnc_auto.html
    novncproxy_port=6080
-   vncserver_proxyclient_address=10.10.100.51
+   vncserver_proxyclient_address=10.10.10.51
    vncserver_listen=0.0.0.0
 
    # Network settings
    network_api_class=nova.network.quantumv2.api.API
-   quantum_url=http://10.10.100.51:9696
+   quantum_url=http://10.10.10.51:9696
    quantum_auth_strategy=keystone
    quantum_admin_tenant_name=service
    quantum_admin_username=quantum
    quantum_admin_password=service_pass
-   quantum_admin_auth_url=http://10.10.100.51:35357/v2.0
+   quantum_admin_auth_url=http://10.10.10.51:35357/v2.0
    libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
    linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
    firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
@@ -506,7 +382,7 @@ Status: On Going Work
    #Metadata
    service_quantum_metadata_proxy = True
    quantum_metadata_proxy_shared_secret = helloOpenStack
-   metadata_host = 10.10.100.51
+   metadata_host = 10.10.10.51
    metadata_listen = 127.0.0.1
    metadata_listen_port = 8775
 
@@ -516,15 +392,6 @@ Status: On Going Work
    # Cinder #
    volume_api_class=nova.volume.cinder.API
    osapi_volume_listen_port=5900
-
-* Edit the /etc/nova/nova-compute.conf::
-
-   [DEFAULT]
-   libvirt_type=kvm
-   libvirt_ovs_bridge=br-int
-   libvirt_vif_type=ethernet
-   libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
-   libvirt_use_virtio_for_bridges=True
     
 * Synchronize your database::
 
@@ -538,8 +405,8 @@ Status: On Going Work
 
    nova-manage service list
 
-7. Cinder
-===========
+2.10. Cinder
+--------------
 
 * Install the required packages::
 
@@ -568,7 +435,7 @@ Status: On Going Work
    service_protocol = http
    service_host = 192.168.100.51
    service_port = 5000
-   auth_host = 10.10.100.51
+   auth_host = 10.10.10.51
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
@@ -579,7 +446,7 @@ Status: On Going Work
 
    [DEFAULT]
    rootwrap_config=/etc/cinder/rootwrap.conf
-   sql_connection = mysql://cinderUser:cinderPass@10.10.100.51/cinder
+   sql_connection = mysql://cinderUser:cinderPass@10.10.10.51/cinder
    api_paste_config = /etc/cinder/api-paste.ini
    iscsi_helper=ietadm
    volume_name_template = volume-%s
@@ -622,8 +489,8 @@ Status: On Going Work
 
    cd /etc/init.d/; for i in $( ls cinder-* ); do sudo service $i status; done
 
-8. Horizon
-===========
+2.11. Horizon
+--------------
 
 * To install horizon, proceed like this ::
 
@@ -637,9 +504,10 @@ Status: On Going Work
 
    service apache2 restart; service memcached restart
 
-You can now access your OpenStack **192.168.100.51/horizon** with credentials **admin:admin_pass**.
+3. Network Node
+================
 
-9. Your first VM
+5. Your first VM
 ================
 
 To start your first VM, we first need to create a new tenant, user and internal network.
@@ -680,7 +548,7 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
 That's it ! Log on to your dashboard, create your secure key and modify your security groups then create your first VM.
 
-10. Licensing
+6. Licensing
 ============
 
 OpenStack Grizzly Install Guide is licensed under a Creative Commons Attribution 3.0 Unported License.
@@ -688,12 +556,12 @@ OpenStack Grizzly Install Guide is licensed under a Creative Commons Attribution
 .. image:: http://i.imgur.com/4XWrp.png
 To view a copy of this license, visit [ http://creativecommons.org/licenses/by/3.0/deed.en_US ].
 
-11. Contacts
+7. Contacts
 ===========
 
 Bilel Msekni  : bilel.msekni@telecom-sudparis.eu
 
-12. Credits
+8. Credits
 =================
 
 This work has been based on:
@@ -701,7 +569,7 @@ This work has been based on:
 * Bilel Msekni's Folsom Install guide [https://github.com/mseknibilel/OpenStack-Folsom-Install-guide]
 * OpenStack Grizzly Install Guide (Master Branch) [https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide]
 
-13. To do
+9. To do
 =======
 
 This guide is just a startup. Your suggestions are always welcomed.
