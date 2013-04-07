@@ -92,6 +92,8 @@ Status: On Going Work
 2.2.Networking
 ------------
 
+* You need to edit the file /etc/network/interfaces and make sure it looks like this.
+
 * Only one NIC should have an internet access::
 
    #For Exposing OpenStack API over the internet
