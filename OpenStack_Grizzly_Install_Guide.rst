@@ -61,7 +61,7 @@ Status: On Going Work
 
 **Note 2:** This is my current network architecture, you can add as many compute node as you wish.
 
-.. image:: http://i.imgur.com/dOIjEbd.jpg
+.. image:: http://i.imgur.com/Frsughe.jpg
 
 2. Controller Node
 ===============
