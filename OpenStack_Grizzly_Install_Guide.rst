@@ -53,9 +53,9 @@ Status: On Going Work
 ====================
 
 :Node Role: NICs
-:Control Node: eth0 (100.10.10.51), eth1 (192.168.100.51)
-:Network Node: eth0 (100.10.10.52), eth1 (100.20.20.52), eth2 (192.168.100.52)
-:Compute Node: eth0 (100.10.10.53), eth1 (100.20.20.53)
+:Control Node: eth0 (10.10.10.51), eth1 (192.168.100.51)
+:Network Node: eth0 (10.10.10.52), eth1 (10.20.20.52), eth2 (192.168.100.52)
+:Compute Node: eth0 (10.10.10.53), eth1 (10.20.20.53)
 
 **Note 1:** Always use dpkg -s <packagename> to make sure you are using grizzly packages (version : 2013.1)
 
@@ -496,9 +496,9 @@ Status: On Going Work
 
    apt-get install openstack-dashboard memcached
 
-* Update /etc/openstack-dashboard/local_settings.py::
+* If you don't like the OpenStack ubuntu theme, you can remove the package to disable it::
 
-   COMPRESS_OFFLINE = False 
+   dpkg --purge openstack-dashboard-ubuntu-theme 
 
 * Reload Apache and memcached::
 
@@ -506,6 +506,389 @@ Status: On Going Work
 
 3. Network Node
 ================
+
+3.1. Preparing the Node
+------------------
+
+* After you install Ubuntu 12.04 Server 64bits, Go in sudo mode::
+
+   sudo su
+
+* Add Grizzly repositories::
+
+   apt-get install ubuntu-cloud-keyring python-software-properties python-keyring
+   add-apt-repository ppa:openstack-ubuntu-testing/grizzly-build-depends
+   add-apt-repository ppa:openstack-ubuntu-testing/grizzly-trunk-testing
+
+* Update your system::
+
+   apt-get update
+   apt-get upgrade
+   apt-get dist-upgrade
+
+* Install ntp service::
+
+   apt-get install ntp
+
+* Configure the NTP server to follow the controller node::
+   
+   sed -i 's/server ntp.ubuntu.com/server 10.10.10.51/g' /etc/ntp.conf
+   service ntp restart  
+
+* Install other services::
+
+   apt-get install vlan bridge-utils
+
+* Enable IP_Forwarding::
+
+   sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
+   
+   # To save you from rebooting, perform the following
+   sysctl net.ipv4.ip_forward=1
+
+3.2.Networking
+------------
+
+* 3 NICs must be present::
+   
+   # OpenStack management
+   auto eth0
+   iface eth0 inet static
+   address 10.10.10.52
+   netmask 255.255.255.0
+
+   # VM Configuration
+   auto eth1
+   iface eth1 inet static
+   address 10.20.20.52
+   netmask 255.255.255.0
+
+   # VM internet Access
+   auto eth2
+   iface eth2 inet manual
+   up ifconfig $IFACE 0.0.0.0 up
+   up ip link set $IFACE promisc on
+   down ip link set $IFACE promisc off
+   down ifconfig $IFACE down
+
+3.4. OpenVSwitch
+------------------
+
+* Install the openVSwitch::
+
+   apt-get install -y openvswitch-switch openvswitch-datapath-dkms
+
+* Create the bridges::
+
+   #br-int will be used for VM integration	
+   ovs-vsctl add-br br-int
+
+   #br-ex is used to make to VM accessible from the internet
+   ovs-vsctl add-br br-ex
+   ovs-vsctl add-port br-ex eth2
+
+3.5. Quantum
+------------------
+
+* Install the Quantum openvswitch agent, l3 agent and dhcp agent::
+
+   apt-get -y install quantum-plugin-openvswitch-agent quantum-dhcp-agent quantum-l3-agent quantum-metadata-agent
+
+* Edit /etc/quantum/api-paste.ini::
+
+   [filter:authtoken]
+   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   auth_host = 10.10.10.51
+   auth_port = 35357
+   auth_protocol = http
+   admin_tenant_name = service
+   admin_user = quantum
+   admin_password = service_pass
+
+* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with:: 
+
+   #Under the database section
+   [DATABASE]
+   sql_connection = mysql://quantumUser:quantumPass@10.10.10.51/quantum
+
+   #Under the OVS section
+   [OVS]
+   tenant_network_type = gre
+   tunnel_id_ranges = 1:1000
+   integration_bridge = br-int
+   tunnel_bridge = br-tun
+   local_ip = 10.20.20.52
+   enable_tunneling = True
+
+* In addition, update the /etc/quantum/l3_agent.ini by pasting this at the end of the file::
+
+   auth_url = http://10.10.10.51:35357/v2.0
+   auth_region = RegionOne
+   admin_tenant_name = service
+   admin_user = quantum
+   admin_password = service_pass
+
+* Update /etc/quantum/metadata_agent.ini::
+
+   use_namespaces = False
+
+* Make sure that your rabbitMQ IP in /etc/quantum/quantum.conf is set to the controller node::
+   
+   # The Quantum user information for accessing the Quantum API.
+   auth_url = http://10.10.10.51:35357/v2.0
+   auth_region = RegionOne
+   admin_tenant_name = service
+   admin_user = quantum
+   admin_password = service_pass
+
+   # IP address used by Nova metadata server
+   nova_metadata_ip = 10.10.10.51
+
+   # TCP Port used by Nova metadata server
+   nova_metadata_port = 8775
+
+   metadata_proxy_shared_secret = helloOpenStack
+
+* Restart all the services::
+
+   cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
+
+4. Compute Node
+=========================
+
+4.1. Preparing the Node
+------------------
+
+* After you install Ubuntu 12.04 Server 64bits, Go in sudo mode::
+
+   sudo su
+
+* Add Grizzly repositories::
+
+   apt-get install ubuntu-cloud-keyring python-software-properties python-keyring
+   add-apt-repository ppa:openstack-ubuntu-testing/grizzly-build-depends
+   add-apt-repository ppa:openstack-ubuntu-testing/grizzly-trunk-testing
+
+* Update your system::
+
+   apt-get update
+   apt-get upgrade
+   apt-get dist-upgrade
+
+* Install ntp service::
+
+   apt-get install ntp
+
+* Configure the NTP server to follow the controller node::
+   
+   sed -i 's/server ntp.ubuntu.com/server 10.10.10.51/g' /etc/ntp.conf
+   service ntp restart  
+
+* Install other services::
+
+   apt-get install vlan bridge-utils
+
+* Enable IP_Forwarding::
+
+   sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
+   
+   # To save you from rebooting, perform the following
+   sysctl net.ipv4.ip_forward=1
+
+4.2.Networking
+------------
+
+* Perform the following::
+   
+   # OpenStack management
+   auto eth0
+   iface eth0 inet static
+   address 10.10.10.53
+   netmask 255.255.255.0
+
+   # VM Configuration
+   auto eth1
+   iface eth1 inet static
+   address 10.20.20.53
+   netmask 255.255.255.0
+
+4.3 KVM
+------------------
+
+* make sure that your hardware enables virtualization::
+
+   apt-get install cpu-checker
+   kvm-ok
+
+* Normally you would get a good response. Now, move to install kvm and configure it::
+
+   apt-get install -y kvm libvirt-bin pm-utils
+
+* Edit the cgroup_device_acl array in the /etc/libvirt/qemu.conf file to::
+
+   cgroup_device_acl = [
+   "/dev/null", "/dev/full", "/dev/zero",
+   "/dev/random", "/dev/urandom",
+   "/dev/ptmx", "/dev/kvm", "/dev/kqemu",
+   "/dev/rtc", "/dev/hpet","/dev/net/tun"
+   ]
+
+* Delete default virtual bridge ::
+
+   virsh net-destroy default
+   virsh net-undefine default
+
+* Enable live migration by updating /etc/libvirt/libvirtd.conf file::
+
+   listen_tls = 0
+   listen_tcp = 1
+   auth_tcp = "none"
+
+* Edit libvirtd_opts variable in /etc/init/libvirt-bin.conf file::
+
+   env libvirtd_opts="-d -l"
+
+* Edit /etc/default/libvirt-bin file ::
+
+   libvirtd_opts="-d -l"
+
+* Restart the libvirt service to load the new values::
+
+   service libvirt-bin restart
+
+4.4. OpenVSwitch
+------------------
+
+* Install the openVSwitch::
+
+   apt-get install -y openvswitch-switch openvswitch-datapath-dkms
+
+* Create the bridges::
+
+   #br-int will be used for VM integration	
+   ovs-vsctl add-br br-int
+
+4.5. Quantum
+------------------
+
+* Install the Quantum openvswitch agent::
+
+   apt-get -y install quantum-plugin-openvswitch-agent
+
+* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with:: 
+
+   #Under the database section
+   [DATABASE]
+   sql_connection = mysql://quantumUser:quantumPass@10.10.10.51/quantum
+
+   #Under the OVS section
+   [OVS]
+   tenant_network_type = gre
+   tunnel_id_ranges = 1:1000
+   integration_bridge = br-int
+   tunnel_bridge = br-tun
+   local_ip = 10.20.20.53
+   enable_tunneling = True
+
+* Make sure that your rabbitMQ IP in /etc/quantum/quantum.conf is set to the controller node::
+   
+   rabbit_host = 10.10.10.51
+
+* Restart all the services::
+
+   service quantum-plugin-openvswitch-agent restart
+
+4.6. Nova
+------------------
+
+* Install nova's required components for the compute node::
+
+   apt-get install nova-compute-kvm
+
+* Now modify authtoken section in the /etc/nova/api-paste.ini file to this::
+
+   [filter:authtoken]
+   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   auth_host = 10.10.10.51
+   auth_port = 35357
+   auth_protocol = http
+   admin_tenant_name = service
+   admin_user = nova
+   admin_password = service_pass
+   signing_dirname = /tmp/keystone-signing-nova
+
+* Edit /etc/nova/nova-compute.conf file ::
+   
+   [DEFAULT]
+   libvirt_type=kvm
+   libvirt_ovs_bridge=br-int
+   libvirt_vif_type=ethernet
+   libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
+   libvirt_use_virtio_for_bridges=True
+
+* Modify the /etc/nova/nova.conf like this::
+
+   [DEFAULT] 
+   logdir=/var/log/nova
+   state_path=/var/lib/nova
+   lock_path=/run/lock/nova
+   verbose=True
+   api_paste_config=/etc/nova/api-paste.ini
+   compute_scheduler_driver=nova.scheduler.simple.SimpleScheduler
+   rabbit_host=10.10.10.51
+   nova_url=http://10.10.10.51:8774/v1.1/
+   sql_connection=mysql://novaUser:novaPass@10.10.10.51/nova
+   root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
+
+   # Auth
+   use_deprecated_auth=false
+   auth_strategy=keystone
+
+   # Imaging service
+   glance_api_servers=10.10.10.51:9292
+   image_service=nova.image.glance.GlanceImageService
+
+   # Vnc configuration
+   novnc_enabled=true
+   novncproxy_base_url=http://192.168.100.51:6080/vnc_auto.html
+   novncproxy_port=6080
+   vncserver_proxyclient_address=10.10.10.51
+   vncserver_listen=0.0.0.0
+
+   # Network settings
+   network_api_class=nova.network.quantumv2.api.API
+   quantum_url=http://10.10.10.51:9696
+   quantum_auth_strategy=keystone
+   quantum_admin_tenant_name=service
+   quantum_admin_username=quantum
+   quantum_admin_password=service_pass
+   quantum_admin_auth_url=http://10.10.10.51:35357/v2.0
+   libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
+   linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
+   firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
+   
+   #Metadata
+   service_quantum_metadata_proxy = True
+   quantum_metadata_proxy_shared_secret = helloOpenStack
+   metadata_host = 10.10.10.51
+   metadata_listen = 127.0.0.1
+   metadata_listen_port = 8775
+
+   # Compute #
+   compute_driver=libvirt.LibvirtDriver
+
+   # Cinder #
+   volume_api_class=nova.volume.cinder.API
+   osapi_volume_listen_port=5900
+
+* Restart nova-* services::
+
+   cd /etc/init.d/; for i in $( ls nova-* ); do sudo service $i restart; done   
+
+* Check for the smiling faces on nova-* services to confirm your installation::
+
+   nova-manage service list
+
 
 5. Your first VM
 ================
