@@ -75,7 +75,7 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install ubuntu-cloud-keyring python-software-properties software-properties-common python-keyring
+   apt-get install ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 * Update your system::
@@ -187,9 +187,9 @@ Status: On Going Work
    service keystone restart
    keystone-manage db_sync
 
-* Fill up the keystone database using the two scripts available in the `Scripts folder <https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/tree/master/KeystoneScripts>`_ of this git repository::
+* Fill up the keystone database using the two scripts available in the `Scripts folder <https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/tree/OVS_MultiNode/KeystoneScripts>`_ of this git repository::
 
-   #Modify the **HOST_IP** and **HOST_IP_EXT** variables before executing the scripts
+   #Modify the **HOST_IP** and **EXT_HOST_IP** variables before executing the scripts
 
    chmod +x keystone_basic.sh
    chmod +x keystone_endpoints_basic.sh
