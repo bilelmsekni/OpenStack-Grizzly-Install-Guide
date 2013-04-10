@@ -639,7 +639,7 @@ Status: On Going Work
 
 * Make sure that your rabbitMQ IP in /etc/quantum/quantum.conf is set to the controller node::
 
-   rabbit_host = 100.10.10.51
+   rabbit_host = 10.10.10.51
 
 * Restart all the services::
 
