@@ -621,10 +621,6 @@ Status: On Going Work
    admin_password = service_pass
 
 * Update /etc/quantum/metadata_agent.ini::
-
-   use_namespaces = False
-
-* Make sure that your rabbitMQ IP in /etc/quantum/quantum.conf is set to the controller node::
    
    # The Quantum user information for accessing the Quantum API.
    auth_url = http://10.10.10.51:35357/v2.0
@@ -640,6 +636,10 @@ Status: On Going Work
    nova_metadata_port = 8775
 
    metadata_proxy_shared_secret = helloOpenStack
+
+* Make sure that your rabbitMQ IP in /etc/quantum/quantum.conf is set to the controller node::
+
+   rabbit_host = 100.10.10.51
 
 * Restart all the services::
 
