@@ -669,7 +669,7 @@ Status: On Going Work
 
 * Install ntp service::
 
-   apt-get install ntp
+   apt-get install -y ntp
 
 * Configure the NTP server to follow the controller node::
    
@@ -678,7 +678,7 @@ Status: On Going Work
 
 * Install other services::
 
-   apt-get install vlan bridge-utils
+   apt-get install -y vlan bridge-utils
 
 * Enable IP_Forwarding::
 
