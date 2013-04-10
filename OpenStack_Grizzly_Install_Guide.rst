@@ -287,7 +287,7 @@ Status: On Going Work
 
 * Install the Quantum server and the OpenVSwitch package collection::
 
-   apt-get install quantum-server quantum-plugin-openvswitch
+   apt-get install -y quantum-server
 
 * Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with:: 
 
