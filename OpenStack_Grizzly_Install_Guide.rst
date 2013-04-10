@@ -420,13 +420,6 @@ Status: On Going Work
    service iscsitarget start
    service open-iscsi start
 
-* Prepare a Mysql database for Cinder::
-
-   mysql -u root -p
-   CREATE DATABASE cinder;
-   GRANT ALL ON cinder.* TO 'cinderUser'@'%' IDENTIFIED BY 'cinderPass';
-   quit;
-
 * Configure /etc/cinder/api-paste.ini like the following::
 
    [filter:authtoken]
@@ -440,6 +433,7 @@ Status: On Going Work
    admin_tenant_name = service
    admin_user = cinder
    admin_password = service_pass
+   signing_dir = /var/lib/cinder
 
 * Edit the /etc/cinder/cinder.conf to::
 
