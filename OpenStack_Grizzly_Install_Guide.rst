@@ -643,7 +643,7 @@ Status: On Going Work
 
    cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
 
-3.4. OpenVSwitch (Part1)
+3.4. OpenVSwitch (Part2)
 ------------------
 
 * Add the eth2 to the br-ex::
