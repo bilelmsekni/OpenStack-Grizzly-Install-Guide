@@ -9,7 +9,7 @@
 Authors
 ==========
 
-`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ <bilel.msekni@telecom-sudparis.eu> && Sandeep Raman <sandeepr@hp.com>
+`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ <bilel.msekni@gmail.com> && Sandeep Raman <sandeepr@hp.com>
 
 Contributors
 ==========
@@ -651,7 +651,7 @@ To view a copy of this license, visit [ http://creativecommons.org/licenses/by/3
 11. Contacts
 ===========
 
-Bilel Msekni  : bilel.msekni@telecom-sudparis.eu
+Bilel Msekni  : bilel.msekni@gmail.com
 
 Sandeep J Raman : sandeepr@hp.com
 
