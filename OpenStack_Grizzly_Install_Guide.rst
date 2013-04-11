@@ -93,7 +93,7 @@ Status: On Going Work
 2.2.Networking
 ------------
 
-* Only one NIC should have an internet access::
+* Only one NIC should have an internet access:: (/etc/network/interfaces)
 
    #For Exposing OpenStack API over the internet
    auto eth1
