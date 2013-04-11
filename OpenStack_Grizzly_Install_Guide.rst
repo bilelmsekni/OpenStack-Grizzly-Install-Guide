@@ -65,7 +65,7 @@ Status: On Going Work
 
 **Note 2:** Always use dpkg -s <packagename> to make sure you are using grizzly packages (version : 2013.1)
 
-**Note 3:** This is my current network architecture, you can add as many compute node as you wish.
+**Note 3:** This is my current network architecture.
 
 .. image:: http://i.imgur.com/JyMokiY.jpg
 
