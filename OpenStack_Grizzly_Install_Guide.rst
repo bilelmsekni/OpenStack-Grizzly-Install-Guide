@@ -138,7 +138,6 @@ Status: On Going Work
    #Nova
    CREATE DATABASE nova;
    GRANT ALL ON nova.* TO 'novaUser'@'%' IDENTIFIED BY 'novaPass';      
-   quit;
 
    #Cinder
    CREATE DATABASE cinder;
