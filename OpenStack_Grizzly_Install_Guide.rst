@@ -562,7 +562,7 @@ Status: On Going Work
    down ip link set $IFACE promisc off
    down ifconfig $IFACE down
 
-3.4. OpenVSwitch
+3.4. OpenVSwitch (Part1)
 ------------------
 
 * Install the openVSwitch::
@@ -576,7 +576,6 @@ Status: On Going Work
 
    #br-ex is used to make to VM accessible from the internet
    ovs-vsctl add-br br-ex
-   ovs-vsctl add-port br-ex eth2
 
 3.5. Quantum
 ------------------
@@ -643,6 +642,16 @@ Status: On Going Work
 * Restart all the services::
 
    cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
+
+3.4. OpenVSwitch (Part1)
+------------------
+
+* Add the eth2 to the br-ex::
+
+   #Internet connectivity will be lost after this step but this won't affect OpenStack's work
+   ovs-vsctl add-port br-ex eth2
+
+   #If you want to get internet connection back, you can assign the eth2's IP address to the br-ex in the /etc/network/interfaces file.
 
 4. Compute Node
 =========================
