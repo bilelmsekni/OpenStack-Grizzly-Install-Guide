@@ -523,7 +523,15 @@ Status: On Going Work
 
 * Configure the NTP server to follow the controller node::
    
+   #Comment the ubuntu NTP servers
+   sed -i 's/server 0.ubuntu.pool.ntp.org/#server 0.ubuntu.pool.ntp.org/g' /etc/ntp.conf
+   sed -i 's/server 1.ubuntu.pool.ntp.org/#server 1.ubuntu.pool.ntp.org/g' /etc/ntp.conf
+   sed -i 's/server 2.ubuntu.pool.ntp.org/#server 2.ubuntu.pool.ntp.org/g' /etc/ntp.conf
+   sed -i 's/server 3.ubuntu.pool.ntp.org/#server 3.ubuntu.pool.ntp.org/g' /etc/ntp.conf
+   
+   #Set the network node to follow up your conroller node
    sed -i 's/server ntp.ubuntu.com/server 10.10.10.51/g' /etc/ntp.conf
+
    service ntp restart  
 
 * Install other services::
@@ -681,7 +689,15 @@ Status: On Going Work
 
 * Configure the NTP server to follow the controller node::
    
+   #Comment the ubuntu NTP servers
+   sed -i 's/server 0.ubuntu.pool.ntp.org/#server 0.ubuntu.pool.ntp.org/g' /etc/ntp.conf
+   sed -i 's/server 1.ubuntu.pool.ntp.org/#server 1.ubuntu.pool.ntp.org/g' /etc/ntp.conf
+   sed -i 's/server 2.ubuntu.pool.ntp.org/#server 2.ubuntu.pool.ntp.org/g' /etc/ntp.conf
+   sed -i 's/server 3.ubuntu.pool.ntp.org/#server 3.ubuntu.pool.ntp.org/g' /etc/ntp.conf
+   
+   #Set the compute node to follow up your conroller node
    sed -i 's/server ntp.ubuntu.com/server 10.10.10.51/g' /etc/ntp.conf
+
    service ntp restart  
 
 * Install other services::
