@@ -351,6 +351,7 @@ Status: On Going Work
 
    cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
    service dnsmasq restart
+* Note: 'dnsmasq' fails to restart if already a service is running on port 53. In that case, kill that service before 'dnsmasq' restart
 
 6. Nova
 ===========
