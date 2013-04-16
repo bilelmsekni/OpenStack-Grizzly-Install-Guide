@@ -80,7 +80,7 @@ Status: On Going Work
 
 * Update your system::
 
-   apt-get update -y
+   apt-get update
    apt-get upgrade -y
    apt-get dist-upgrade -y
 
@@ -513,7 +513,7 @@ Status: On Going Work
 
 * Update your system::
 
-   apt-get update -y
+   apt-get update
    apt-get upgrade -y
    apt-get dist-upgrade -y
 
@@ -679,7 +679,7 @@ Status: On Going Work
 
 * Update your system::
 
-   apt-get update -y
+   apt-get update
    apt-get upgrade -y
    apt-get dist-upgrade -y
 
