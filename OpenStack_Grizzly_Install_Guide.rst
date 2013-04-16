@@ -9,7 +9,7 @@
 Authors
 ==========
 
-`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ 
+`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_
 
 Contributors
 ==========
@@ -42,7 +42,7 @@ Table of Contents
 0. What is it?
 ==============
 
-OpenStack Grizzly Install Guide is an easy and tested way to create your own OpenStack platform. 
+OpenStack Grizzly Install Guide is an easy and tested way to create your own OpenStack platform.
 
 If you like it, don't forget to star it !
 
@@ -75,7 +75,7 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install -y ubuntu-cloud-keyring 
+   apt-get install -y ubuntu-cloud-keyring
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 * Update your system::
@@ -110,7 +110,7 @@ Status: On Going Work
 2.3. MySQL & RabbitMQ
 ------------
 
-* Install MySQL::
+* Install MySQL (set the password to "mysqlPass")::
 
    apt-get install -y mysql-server python-mysqldb
 
@@ -121,41 +121,47 @@ Status: On Going Work
 
 * Create these databases::
 
-   mysql -u root -p
-   
+   mysql -u root -pmysqlPass <<EOF
+
    #Keystone
    CREATE DATABASE keystone;
    GRANT ALL ON keystone.* TO 'keystoneUser'@'%' IDENTIFIED BY 'keystonePass';
-   
+   GRANT ALL ON keystone.* TO 'keystoneUser'@'localhost' IDENTIFIED BY 'keystonePass';
+
    #Glance
    CREATE DATABASE glance;
    GRANT ALL ON glance.* TO 'glanceUser'@'%' IDENTIFIED BY 'glancePass';
+   GRANT ALL ON glance.* TO 'glanceUser'@'localhost' IDENTIFIED BY 'glancePass';
 
    #Quantum
    CREATE DATABASE quantum;
    GRANT ALL ON quantum.* TO 'quantumUser'@'%' IDENTIFIED BY 'quantumPass';
+   GRANT ALL ON quantum.* TO 'quantumUser'@'localhost' IDENTIFIED BY 'quantumPass';
 
    #Nova
    CREATE DATABASE nova;
-   GRANT ALL ON nova.* TO 'novaUser'@'%' IDENTIFIED BY 'novaPass';      
+   GRANT ALL ON nova.* TO 'novaUser'@'%' IDENTIFIED BY 'novaPass';
+   GRANT ALL ON nova.* TO 'novaUser'@'localhost' IDENTIFIED BY 'novaPass';
 
    #Cinder
    CREATE DATABASE cinder;
    GRANT ALL ON cinder.* TO 'cinderUser'@'%' IDENTIFIED BY 'cinderPass';
+   GRANT ALL ON cinder.* TO 'cinderUser'@'localhost' IDENTIFIED BY 'cinderPass';
 
-   quit;
+   FLUSH PRIVILEGES;
+   EOF
 
 2.4. RabbitMQ
 -------------------
 
 * Install RabbitMQ::
 
-   apt-get install -y rabbitmq-server 
+   apt-get install -y rabbitmq-server
 
 * Install NTP service::
 
    apt-get install -y ntp
- 
+
 2.5. Others
 -------------------
 
@@ -251,7 +257,7 @@ Status: On Going Work
 
    [paste_deploy]
    flavor = keystone
-   
+
 * Update the /etc/glance/glance-registry.conf with::
 
    sql_connection = mysql://glanceUser:glancePass@10.10.10.51/glance
@@ -274,7 +280,7 @@ Status: On Going Work
    mkdir images
    cd images
    wget https://launchpad.net/cirros/trunk/0.3.0/+download/cirros-0.3.0-x86_64-disk.img
-   
+
    glance image-create --name myFirstImage --is-public true --container-format bare --disk-format qcow2 < cirros-0.3.0-x86_64-disk.img
 
 * Now list the image to see what you have just uploaded::
@@ -288,7 +294,7 @@ Status: On Going Work
 
    apt-get install -y quantum-server
 
-* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with:: 
+* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with::
 
    #Under the database section
    [DATABASE]
@@ -338,7 +344,7 @@ Status: On Going Work
 
 * Modify the /etc/nova/nova.conf like this::
 
-   [DEFAULT] 
+   [DEFAULT]
    logdir=/var/log/nova
    state_path=/var/lib/nova
    lock_path=/run/lock/nova
@@ -376,7 +382,7 @@ Status: On Going Work
    libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
    linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
    firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
-   
+
    #Metadata
    service_quantum_metadata_proxy = True
    quantum_metadata_proxy_shared_secret = helloOpenStack
@@ -390,14 +396,14 @@ Status: On Going Work
    # Cinder #
    volume_api_class=nova.volume.cinder.API
    osapi_volume_listen_port=5900
-    
+
 * Synchronize your database::
 
    nova-manage db sync
 
 * Restart nova-* services::
 
-   cd /etc/init.d/; for i in $( ls nova-* ); do sudo service $i restart; done   
+   cd /etc/init.d/; for i in $( ls nova-* ); do sudo service $i restart; done
 
 * Check for the smiling faces on nova-* services to confirm your installation::
 
@@ -415,7 +421,7 @@ Status: On Going Work
    sed -i 's/false/true/g' /etc/default/iscsitarget
 
 * Restart the services::
-   
+
    service iscsitarget start
    service open-iscsi start
 
@@ -471,7 +477,7 @@ Status: On Going Work
    pvcreate /dev/loop2
    vgcreate cinder-volumes /dev/loop2
 
-**Note:** Beware that this volume group gets lost after a system reboot. (Click `Here <https://github.com/mseknibilel/OpenStack-Folsom-Install-guide/blob/master/Tricks%26Ideas/load_volume_group_after_system_reboot.rst>`_ to know how to load it after a reboot) 
+**Note:** Beware that this volume group gets lost after a system reboot. (Click `Here <https://github.com/mseknibilel/OpenStack-Folsom-Install-guide/blob/master/Tricks%26Ideas/load_volume_group_after_system_reboot.rst>`_ to know how to load it after a reboot)
 
 * Restart the cinder services::
 
@@ -490,7 +496,7 @@ Status: On Going Work
 
 * If you don't like the OpenStack ubuntu theme, you can remove the package to disable it::
 
-   dpkg --purge openstack-dashboard-ubuntu-theme 
+   dpkg --purge openstack-dashboard-ubuntu-theme
 
 * Reload Apache and memcached::
 
@@ -508,7 +514,7 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install -y ubuntu-cloud-keyring 
+   apt-get install -y ubuntu-cloud-keyring
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 * Update your system::
@@ -522,17 +528,17 @@ Status: On Going Work
    apt-get install -y ntp
 
 * Configure the NTP server to follow the controller node::
-   
+
    #Comment the ubuntu NTP servers
    sed -i 's/server 0.ubuntu.pool.ntp.org/#server 0.ubuntu.pool.ntp.org/g' /etc/ntp.conf
    sed -i 's/server 1.ubuntu.pool.ntp.org/#server 1.ubuntu.pool.ntp.org/g' /etc/ntp.conf
    sed -i 's/server 2.ubuntu.pool.ntp.org/#server 2.ubuntu.pool.ntp.org/g' /etc/ntp.conf
    sed -i 's/server 3.ubuntu.pool.ntp.org/#server 3.ubuntu.pool.ntp.org/g' /etc/ntp.conf
-   
+
    #Set the network node to follow up your conroller node
    sed -i 's/server ntp.ubuntu.com/server 10.10.10.51/g' /etc/ntp.conf
 
-   service ntp restart  
+   service ntp restart
 
 * Install other services::
 
@@ -541,7 +547,7 @@ Status: On Going Work
 * Enable IP_Forwarding::
 
    sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
-   
+
    # To save you from rebooting, perform the following
    sysctl net.ipv4.ip_forward=1
 
@@ -549,7 +555,7 @@ Status: On Going Work
 ------------
 
 * 3 NICs must be present::
-   
+
    # OpenStack management
    auto eth0
    iface eth0 inet static
@@ -579,7 +585,7 @@ Status: On Going Work
 
 * Create the bridges::
 
-   #br-int will be used for VM integration	
+   #br-int will be used for VM integration
    ovs-vsctl add-br br-int
 
    #br-ex is used to make to VM accessible from the internet
@@ -603,7 +609,7 @@ Status: On Going Work
    admin_user = quantum
    admin_password = service_pass
 
-* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with:: 
+* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with::
 
    #Under the database section
    [DATABASE]
@@ -627,7 +633,7 @@ Status: On Going Work
    admin_password = service_pass
 
 * Update /etc/quantum/metadata_agent.ini::
-   
+
    # The Quantum user information for accessing the Quantum API.
    auth_url = http://10.10.10.51:35357/v2.0
    auth_region = RegionOne
@@ -673,7 +679,7 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install -y ubuntu-cloud-keyring 
+   apt-get install -y ubuntu-cloud-keyring
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 
@@ -688,17 +694,17 @@ Status: On Going Work
    apt-get install -y ntp
 
 * Configure the NTP server to follow the controller node::
-   
+
    #Comment the ubuntu NTP servers
    sed -i 's/server 0.ubuntu.pool.ntp.org/#server 0.ubuntu.pool.ntp.org/g' /etc/ntp.conf
    sed -i 's/server 1.ubuntu.pool.ntp.org/#server 1.ubuntu.pool.ntp.org/g' /etc/ntp.conf
    sed -i 's/server 2.ubuntu.pool.ntp.org/#server 2.ubuntu.pool.ntp.org/g' /etc/ntp.conf
    sed -i 's/server 3.ubuntu.pool.ntp.org/#server 3.ubuntu.pool.ntp.org/g' /etc/ntp.conf
-   
+
    #Set the compute node to follow up your conroller node
    sed -i 's/server ntp.ubuntu.com/server 10.10.10.51/g' /etc/ntp.conf
 
-   service ntp restart  
+   service ntp restart
 
 * Install other services::
 
@@ -707,7 +713,7 @@ Status: On Going Work
 * Enable IP_Forwarding::
 
    sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
-   
+
    # To save you from rebooting, perform the following
    sysctl net.ipv4.ip_forward=1
 
@@ -715,7 +721,7 @@ Status: On Going Work
 ------------
 
 * Perform the following::
-   
+
    # OpenStack management
    auto eth0
    iface eth0 inet static
@@ -781,7 +787,7 @@ Status: On Going Work
 
 * Create the bridges::
 
-   #br-int will be used for VM integration	
+   #br-int will be used for VM integration
    ovs-vsctl add-br br-int
 
 4.5. Quantum
@@ -791,7 +797,7 @@ Status: On Going Work
 
    apt-get -y install quantum-plugin-openvswitch-agent
 
-* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with:: 
+* Edit the OVS plugin configuration file /etc/quantum/plugins/openvswitch/ovs_quantum_plugin.ini with::
 
    #Under the database section
    [DATABASE]
@@ -807,7 +813,7 @@ Status: On Going Work
    enable_tunneling = True
 
 * Make sure that your rabbitMQ IP in /etc/quantum/quantum.conf is set to the controller node::
-   
+
    rabbit_host = 10.10.10.51
 
 * Restart all the services::
@@ -834,7 +840,7 @@ Status: On Going Work
    signing_dirname = /tmp/keystone-signing-nova
 
 * Edit /etc/nova/nova-compute.conf file ::
-   
+
    [DEFAULT]
    libvirt_type=kvm
    libvirt_ovs_bridge=br-int
@@ -844,7 +850,7 @@ Status: On Going Work
 
 * Modify the /etc/nova/nova.conf like this::
 
-   [DEFAULT] 
+   [DEFAULT]
    logdir=/var/log/nova
    state_path=/var/lib/nova
    lock_path=/run/lock/nova
@@ -882,7 +888,7 @@ Status: On Going Work
    libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
    linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
    firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
-   
+
    #Metadata
    service_quantum_metadata_proxy = True
    quantum_metadata_proxy_shared_secret = helloOpenStack
@@ -899,7 +905,7 @@ Status: On Going Work
 
 * Restart nova-* services::
 
-   cd /etc/init.d/; for i in $( ls nova-* ); do sudo service $i restart; done   
+   cd /etc/init.d/; for i in $( ls nova-* ); do sudo service $i restart; done
 
 * Check for the smiling faces on nova-* services to confirm your installation::
 
@@ -922,7 +928,7 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
 * Create a new network for the tenant::
 
-   quantum net-create --tenant-id $put_id_of_project_one net_proj_one 
+   quantum net-create --tenant-id $put_id_of_project_one net_proj_one
 
 * Create a new subnet inside the new tenant network::
 
