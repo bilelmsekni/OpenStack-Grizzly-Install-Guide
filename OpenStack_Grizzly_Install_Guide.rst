@@ -887,7 +887,7 @@ Status: On Going Work
    service_quantum_metadata_proxy = True
    quantum_metadata_proxy_shared_secret = helloOpenStack
    metadata_host = 10.10.10.51
-   metadata_listen = 127.0.0.1
+   metadata_listen = 0.0.0.0
    metadata_listen_port = 8775
 
    # Compute #
