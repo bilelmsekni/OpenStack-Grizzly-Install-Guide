@@ -51,7 +51,7 @@ OpenStack Grizzly Install Guide is an easy and tested way to create your own Ope
 
 If you like it, don't forget to star it !
 
-Status: On Going Work
+Status: Stable
 
 
 1. Requirements
