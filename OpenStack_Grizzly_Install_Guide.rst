@@ -17,7 +17,7 @@ Contributors
 =================================================== =======================================================
 
  Houssem Medhioub <houssem.medhioub@it-sudparis.eu> Djamal Zeghlache <djamal.zeghlache@telecom-sudparis.eu>
- Sandeep Raman  <sandeepr@hp.com>		    Sam Stoelinga <sammiestoel@gmail.com>
+ Sandeep Raman  <sandeepr@hp.com>        Sam Stoelinga <sammiestoel@gmail.com>
  Anil Vishnoi <vishnoianil@gmail.com>
 =================================================== =======================================================
 
@@ -53,8 +53,8 @@ Status: On Going Work
 ====================
 
 :Node Role: NICs
-:Control Node: eth0 (10.10.10.51), eth1 (192.168.100.51)
-:Network Node: eth0 (10.10.10.52), eth1 (10.20.20.52), eth2 (192.168.100.52)
+:Control Node: eth0 (10.10.10.51), eth1 (169.254.100.51)
+:Network Node: eth0 (10.10.10.52), eth1 (10.20.20.52), eth2 (169.254.100.52)
 :Compute Node: eth0 (10.10.10.53), eth1 (10.20.20.53)
 
 **Note 1:** Always use dpkg -s <packagename> to make sure you are using grizzly packages (version : 2013.1)
@@ -75,14 +75,14 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install ubuntu-cloud-keyring 
+   apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 * Update your system::
 
    apt-get update
-   apt-get upgrade
-   apt-get dist-upgrade
+   apt-get upgrade -y
+   apt-get dist-upgrade -y
 
 2.2. Networking
 ------------
@@ -92,9 +92,9 @@ Status: On Going Work
    #For Exposing OpenStack API over the internet
    auto eth1
    iface eth1 inet static
-   address 192.168.100.51
-   netmask 255.255.255.0
-   gateway 192.168.100.1
+   address 169.254.100.51
+   netmask 255.255.0.0
+   gateway 169.254.0.1
    dns-nameservers 8.8.8.8
 
    #Not internet connected(used for OpenStack management)
@@ -204,7 +204,7 @@ Status: On Going Work
    export OS_TENANT_NAME=admin
    export OS_USERNAME=admin
    export OS_PASSWORD=admin_pass
-   export OS_AUTH_URL="http://192.168.100.51:5000/v2.0/"
+   export OS_AUTH_URL="http://169.254.100.51:5000/v2.0/"
 
    # Load it:
    source creds
@@ -360,7 +360,7 @@ Status: On Going Work
 
    # Vnc configuration
    novnc_enabled=true
-   novncproxy_base_url=http://192.168.100.51:6080/vnc_auto.html
+   novncproxy_base_url=http://169.254.100.51:6080/vnc_auto.html
    novncproxy_port=6080
    vncserver_proxyclient_address=10.10.10.51
    vncserver_listen=0.0.0.0
@@ -424,7 +424,7 @@ Status: On Going Work
    [filter:authtoken]
    paste.filter_factory = keystone.middleware.auth_token:filter_factory
    service_protocol = http
-   service_host = 192.168.100.51
+   service_host = 169.254.100.51
    service_port = 5000
    auth_host = 10.10.10.51
    auth_port = 35357
@@ -486,7 +486,7 @@ Status: On Going Work
 
 * To install horizon, proceed like this ::
 
-   apt-get install openstack-dashboard memcached
+   apt-get install -y openstack-dashboard memcached
 
 * If you don't like the OpenStack ubuntu theme, you can remove the package to disable it::
 
@@ -508,14 +508,14 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install ubuntu-cloud-keyring 
+   apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 * Update your system::
 
    apt-get update
-   apt-get upgrade
-   apt-get dist-upgrade
+   apt-get upgrade -y
+   apt-get dist-upgrade -y
 
 * Install ntp service::
 
@@ -673,15 +673,15 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install ubuntu-cloud-keyring 
+   apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 
 * Update your system::
 
    apt-get update
-   apt-get upgrade
-   apt-get dist-upgrade
+   apt-get upgrade -y
+   apt-get dist-upgrade -y
 
 * Install ntp service::
 
@@ -733,7 +733,7 @@ Status: On Going Work
 
 * make sure that your hardware enables virtualization::
 
-   apt-get install cpu-checker
+   apt-get install -y cpu-checker
    kvm-ok
 
 * Normally you would get a good response. Now, move to install kvm and configure it::
@@ -819,7 +819,7 @@ Status: On Going Work
 
 * Install nova's required components for the compute node::
 
-   apt-get install nova-compute-kvm
+   apt-get install -y nova-compute-kvm
 
 * Now modify authtoken section in the /etc/nova/api-paste.ini file to this::
 
@@ -866,7 +866,7 @@ Status: On Going Work
 
    # Vnc configuration
    novnc_enabled=true
-   novncproxy_base_url=http://192.168.100.51:6080/vnc_auto.html
+   novncproxy_base_url=http://169.254.100.51:6080/vnc_auto.html
    novncproxy_port=6080
    vncserver_proxyclient_address=10.10.10.51
    vncserver_listen=0.0.0.0
