@@ -17,7 +17,7 @@ Contributors
 =================================================== =======================================================
 
  Houssem Medhioub <houssem.medhioub@it-sudparis.eu> Djamal Zeghlache <djamal.zeghlache@telecom-sudparis.eu>
- Sandeep Raman  <sandeepr@hp.com>		    Sam Stoelinga <sammiestoel@gmail.com>
+ Sandeep Raman  <sandeepr@hp.com>  	    Sam Stoelinga <sammiestoel@gmail.com>
  Anil Vishnoi <vishnoianil@gmail.com>
 =================================================== =======================================================
 
@@ -75,7 +75,7 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install ubuntu-cloud-keyring 
+   apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 * Update your system::
@@ -486,7 +486,7 @@ Status: On Going Work
 
 * To install horizon, proceed like this ::
 
-   apt-get install openstack-dashboard memcached
+   apt-get install -y openstack-dashboard memcached
 
 * If you don't like the OpenStack ubuntu theme, you can remove the package to disable it::
 
@@ -508,7 +508,7 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install ubuntu-cloud-keyring 
+   apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 * Update your system::
@@ -673,7 +673,7 @@ Status: On Going Work
 
 * Add Grizzly repositories::
 
-   apt-get install ubuntu-cloud-keyring 
+   apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
 
@@ -733,7 +733,7 @@ Status: On Going Work
 
 * make sure that your hardware enables virtualization::
 
-   apt-get install cpu-checker
+   apt-get install -y cpu-checker
    kvm-ok
 
 * Normally you would get a good response. Now, move to install kvm and configure it::
@@ -819,7 +819,7 @@ Status: On Going Work
 
 * Install nova's required components for the compute node::
 
-   apt-get install nova-compute-kvm
+   apt-get install -y nova-compute-kvm
 
 * Now modify authtoken section in the /etc/nova/api-paste.ini file to this::
 
