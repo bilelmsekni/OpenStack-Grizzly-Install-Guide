@@ -564,11 +564,9 @@ Status: On Going Work
 
    # VM internet Access
    auto eth2
-   iface eth2 inet manual
-   up ifconfig $IFACE 0.0.0.0 up
-   up ip link set $IFACE promisc on
-   down ip link set $IFACE promisc off
-   down ifconfig $IFACE down
+   iface eth2 inet static
+   address 192.168.100.52
+   netmask 255.255.255.0
 
 3.4. OpenVSwitch (Part1)
 ------------------
@@ -653,6 +651,15 @@ Status: On Going Work
 
 3.4. OpenVSwitch (Part2)
 ------------------
+* Edit the eth2 in /etc/network/interfaces to become like this::
+
+   # VM internet Access
+   auto eth2
+   iface eth2 inet manual
+   up ifconfig $IFACE 0.0.0.0 up
+   up ip link set $IFACE promisc on
+   down ip link set $IFACE promisc off
+   down ifconfig $IFACE down
 
 * Add the eth2 to the br-ex::
 
