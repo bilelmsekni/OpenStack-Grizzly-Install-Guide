@@ -17,7 +17,7 @@ Contributors
 =================================================== =======================================================
 
  Houssem Medhioub <houssem.medhioub@it-sudparis.eu> Djamal Zeghlache <djamal.zeghlache@telecom-sudparis.eu>
- Sandeep Raman  <sandeepr@hp.com>  	    Sam Stoelinga <sammiestoel@gmail.com>
+ Sandeep Raman  <sandeepr@hp.com>        Sam Stoelinga <sammiestoel@gmail.com>
  Anil Vishnoi <vishnoianil@gmail.com>
 =================================================== =======================================================
 
@@ -80,9 +80,9 @@ Status: On Going Work
 
 * Update your system::
 
-   apt-get update
-   apt-get upgrade
-   apt-get dist-upgrade
+   apt-get update -y
+   apt-get upgrade -y
+   apt-get dist-upgrade -y
 
 2.2. Networking
 ------------
@@ -513,9 +513,9 @@ Status: On Going Work
 
 * Update your system::
 
-   apt-get update
-   apt-get upgrade
-   apt-get dist-upgrade
+   apt-get update -y
+   apt-get upgrade -y
+   apt-get dist-upgrade -y
 
 * Install ntp service::
 
@@ -679,9 +679,9 @@ Status: On Going Work
 
 * Update your system::
 
-   apt-get update
-   apt-get upgrade
-   apt-get dist-upgrade
+   apt-get update -y
+   apt-get upgrade -y
+   apt-get dist-upgrade -y
 
 * Install ntp service::
 
