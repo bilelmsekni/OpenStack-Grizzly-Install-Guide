@@ -282,7 +282,7 @@ Status: Stable
 
 * To test Glance, upload the cirros cloud image directly from the internet::
 
-   glance image-create --name myFirstImage --is-public true --container-format bare --disk-format qcow2 https://launchpad.net/cirros/trunk/0.3.0/+download/cirros-0.3.0-x86_64-disk.img
+   glance image-create --name myFirstImage --is-public true --container-format bare --disk-format qcow2 --location https://launchpad.net/cirros/trunk/0.3.0/+download/cirros-0.3.0-x86_64-disk.img
 
 * Now list the image to see what you have just uploaded::
 
