@@ -279,13 +279,9 @@ Status: Stable
 
    service glance-registry restart; service glance-api restart
 
-* To test Glance, start by downloading the cirros cloud image to your node and then upload it to Glance::
+* To test Glance, upload the cirros cloud image directly from the internet::
 
-   mkdir images
-   cd images
-   wget https://launchpad.net/cirros/trunk/0.3.0/+download/cirros-0.3.0-x86_64-disk.img
-   
-   glance image-create --name myFirstImage --is-public true --container-format bare --disk-format qcow2 < cirros-0.3.0-x86_64-disk.img
+   glance image-create --name myFirstImage --is-public true --container-format bare --disk-format qcow2 https://launchpad.net/cirros/trunk/0.3.0/+download/cirros-0.3.0-x86_64-disk.img
 
 * Now list the image to see what you have just uploaded::
 
