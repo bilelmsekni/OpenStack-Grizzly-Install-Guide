@@ -190,8 +190,8 @@ Status: On Going Work
 
    #Modify the **HOST_IP** and **EXT_HOST_IP** variables before executing the scripts
    
-   wget https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/blob/OVS_MultiNode/KeystoneScripts/keystone_basic.sh
-   wget https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/blob/OVS_MultiNode/KeystoneScripts/keystone_endpoints_basic.sh
+   wget https://raw.github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/OVS_MultiNode/KeystoneScripts/keystone_basic.sh
+   wget https://raw.github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/OVS_MultiNode/KeystoneScripts/keystone_endpoints_basic.sh
 
    chmod +x keystone_basic.sh
    chmod +x keystone_endpoints_basic.sh
