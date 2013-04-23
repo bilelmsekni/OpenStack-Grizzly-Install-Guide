@@ -181,8 +181,8 @@ Status: Stable
 
    #Modify the HOST_IP and HOST_IP_EXT variables before executing the scripts
    
-   wget https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/blob/OVS_SingleNode/KeystoneScripts/keystone_basic.sh
-   wget https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/blob/OVS_SingleNode/KeystoneScripts/keystone_endpoints_basic.sh
+   wget https://raw.github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/OVS_SingleNode/KeystoneScripts/keystone_basic.sh
+   wget https://raw.github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/OVS_SingleNode/KeystoneScripts/keystone_endpoints_basic.sh
 
    chmod +x keystone_basic.sh
    chmod +x keystone_endpoints_basic.sh
