@@ -323,8 +323,11 @@ Status: Stable
 
 * Edit the LinuxBridge plugin config file /etc/quantum/plugins/linuxbridge/linuxbridge_conf.ini with:: 
 
+   # under [DATABASE] section  
    sql_connection = mysql://quantumUser:quantumPass@10.10.100.51/quantum
+   # under [LINUX_BRIDGE] section
    physical_interface_mappings = physnet1:eth1
+   # under [VLANS] section
    tenant_network_type = vlan
    network_vlan_ranges = physnet1:1000:2999
 
