@@ -302,7 +302,7 @@ Status: On Going Work
 * Edit /etc/quantum/api-paste.ini ::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    auth_host = 10.10.10.51
    auth_port = 35357
    auth_protocol = http
@@ -324,7 +324,7 @@ Status: On Going Work
 * Now modify authtoken section in the /etc/nova/api-paste.ini file to this::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    auth_host = 10.10.10.51
    auth_port = 35357
    auth_protocol = http
@@ -421,7 +421,7 @@ Status: On Going Work
 * Configure /etc/cinder/api-paste.ini like the following::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    service_protocol = http
    service_host = 192.168.100.51
    service_port = 5000
