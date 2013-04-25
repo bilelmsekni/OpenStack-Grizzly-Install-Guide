@@ -60,7 +60,7 @@ Status: Stable
 :Node Role: NICs
 :Single Node: eth0 (10.10.100.51), eth1 (192.168.100.51)
 
-**Note 1:** More guides for multi node deployments will be available soon.
+**Note 1:** Multi node deployment is available on the OVS_MultiNode branch.
 
 **Note 2:** Always use dpkg -s <packagename> to make sure you are using grizzly packages (version : 2013.1)
 
@@ -241,7 +241,7 @@ Status: Stable
 * Update the /etc/glance/glance-registry-paste.ini with::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
@@ -326,7 +326,7 @@ Status: Stable
 * Edit /etc/quantum/api-paste.ini ::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
@@ -449,7 +449,7 @@ Status: Stable
 * Now modify authtoken section in the /etc/nova/api-paste.ini file to this::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
@@ -562,7 +562,7 @@ Status: Stable
 * Configure /etc/cinder/api-paste.ini like the following::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    service_protocol = http
    service_host = 192.168.100.51
    service_port = 5000
@@ -702,7 +702,7 @@ This work has been based on:
 13. To do
 =======
 
-This guide is just a startup. Your suggestions are always welcomed.
+Your suggestions are always welcomed.
 
 
 
