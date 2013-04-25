@@ -242,7 +242,7 @@ Status: Stable
 * Update the /etc/glance/glance-registry-paste.ini with::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
@@ -313,7 +313,7 @@ Status: Stable
 * Edit /etc/quantum/api-paste.ini ::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
@@ -423,7 +423,7 @@ Status: Stable
 * Now modify authtoken section in the /etc/nova/api-paste.ini file to this::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    auth_host = 10.10.100.51
    auth_port = 35357
    auth_protocol = http
@@ -528,7 +528,7 @@ Status: Stable
 * Configure /etc/cinder/api-paste.ini like the following::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    service_protocol = http
    service_host = 192.168.100.51
    service_port = 5000
@@ -669,9 +669,4 @@ This work has been based on:
 13. To do
 =======
 
-This guide is just a startup. Your suggestions are always welcomed.
- 
-
-
-
-
+Your suggestions are always welcomed.
