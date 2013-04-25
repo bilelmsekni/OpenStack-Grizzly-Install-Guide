@@ -977,7 +977,7 @@ This work has been based on:
 9. To do
 =======
 
-This guide is just a startup. Your suggestions are always welcomed.
+Your suggestions are always welcomed.
 
 
 
