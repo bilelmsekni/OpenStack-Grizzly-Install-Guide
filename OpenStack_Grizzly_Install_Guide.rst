@@ -838,6 +838,8 @@ Status: On Going Work
    admin_user = nova
    admin_password = service_pass
    signing_dirname = /tmp/keystone-signing-nova
+   # Workaround for https://bugs.launchpad.net/nova/+bug/1154809
+   auth_version = v2.0
 
 * Edit /etc/nova/nova-compute.conf file ::
    
