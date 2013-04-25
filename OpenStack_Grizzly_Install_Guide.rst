@@ -876,7 +876,7 @@ Status: On Going Work
    novnc_enabled=true
    novncproxy_base_url=http://192.168.100.51:6080/vnc_auto.html
    novncproxy_port=6080
-   vncserver_proxyclient_address=10.10.10.51
+   vncserver_proxyclient_address=10.10.10.53
    vncserver_listen=0.0.0.0
 
    # Network settings
