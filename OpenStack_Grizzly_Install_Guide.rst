@@ -61,7 +61,7 @@ Status: Stable
 :Node Role: NICs
 :Single Node: eth0 (10.10.100.51), eth1 (192.168.100.51)
 
-**Note 1:** More guides for multi node deployments will be available soon.
+**Note 1:** Multi node deployment is available on the OVS_MultiNode branch.
 
 **Note 2:** Always use dpkg -s <packagename> to make sure you are using grizzly packages (version : 2013.1)
 
