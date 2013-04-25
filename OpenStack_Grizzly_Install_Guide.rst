@@ -238,7 +238,7 @@ Status: On Going Work
 * Update the /etc/glance/glance-registry-paste.ini with::
 
    [filter:authtoken]
-   paste.filter_factory = keystone.middleware.auth_token:filter_factory
+   paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
    auth_host = 10.10.10.51
    auth_port = 35357
    auth_protocol = http
