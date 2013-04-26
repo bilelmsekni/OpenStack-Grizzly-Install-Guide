@@ -2,7 +2,7 @@
   OpenStack Grizzly Install Guide
 ==========================================================
 
-:Version: 1.0
+:Version: 2.0
 :Source: https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide
 :Keywords: Single node OpenStack, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, OpenVSwitch, KVM, Ubuntu Server 12.04 (64 bits).
 
@@ -167,10 +167,6 @@ Status: Stable
 * Adapt the connection attribute in the /etc/keystone/keystone.conf to the new database::
 
    connection = mysql://keystoneUser:keystonePass@10.10.100.51/keystone
-
-* Modify the keystone token type in the /etc/keystone/keystone.conf::
-
-   token_format = UUID
 
 * Restart the identity service then synchronize the database::
 
@@ -349,16 +345,6 @@ Status: Stable
    local_ip = 10.10.100.51
    enable_tunneling = True
 
-* Edit the /etc/quantum/l3_agent.ini::
-
-   # Paste this at the end of the file
-
-   auth_url = http://10.10.100.51:35357/v2.0 
-   auth_region = RegionOne
-   admin_tenant_name = service
-   admin_user = quantum
-   admin_password = service_pass
-
 * Update /etc/quantum/metadata_agent.ini::
 
    # The Quantum user information for accessing the Quantum API.
@@ -375,6 +361,17 @@ Status: Stable
    nova_metadata_port = 8775
 
    metadata_proxy_shared_secret = helloOpenStack
+
+* Edit your /etc/quantum/quantum.conf::
+
+   [keystone_authtoken]
+   auth_host = 10.10.100.51
+   auth_port = 35357
+   auth_protocol = http
+   admin_tenant_name = service
+   admin_user = quantum
+   admin_password = service_pass
+   signing_dir = /var/lib/quantum/keystone-signing
 
 * Restart all quantum services::
 
@@ -627,9 +624,9 @@ Status: Stable
 
    apt-get install openstack-dashboard memcached
 
-* Update /etc/openstack-dashboard/local_settings.py::
+* If you don't like the OpenStack ubuntu theme, you can remove the package to disable it::
 
-   COMPRESS_OFFLINE = False 
+   dpkg --purge openstack-dashboard-ubuntu-theme 
 
 * Reload Apache and memcached::
 
@@ -663,7 +660,7 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
    quantum router-create --tenant-id $put_id_of_project_one router_proj_one
 
-* Add the router to the running l3 agent::
+* Add the router to the running l3 agent (If it's not automatically added)::
 
    quantum agent-list (to get the l3 agent ID)
    quantum l3-agent-router-add $l3_agent_ID router_proj_one
