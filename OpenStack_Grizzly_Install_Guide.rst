@@ -963,7 +963,7 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
    quantum router-create --tenant-id $put_id_of_project_one router_proj_one
 
-* Add the router to the running l3 agent::
+* Add the router to the running l3 agent (if it wasn't automatically added)::
 
    quantum agent-list (to get the l3 agent ID)
    quantum l3-agent-router-add $l3_agent_ID router_proj_one
@@ -976,7 +976,47 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
    cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
 
-That's it ! Log on to your dashboard, create your secure key and modify your security groups then create your first VM.
+* Create an external network with the tenant id belonging to the admin tenant (keystone tenant-list to get the appropriate id)::
+
+   quantum net-create --tenant-id $put_id_of_admin_tenant ext_net --router:external=True
+
+* Create a subnet for the floating ips::
+
+   quantum subnet-create --tenant-id $put_id_of_admin_tenant --allocation-pool start=192.168.100.102,end=192.168.100.126 --gateway 192.168.100.1 ext_net 192.168.100.100/24 --enable_dhcp=False
+
+* Set your router's gateway to the external network:: 
+
+   quantum router-gateway-set $put_router_proj_one_id_here $put_id_of_ext_net_here
+
+* Source creds relative to your project one tenant now::
+
+   nano creds_proj_one
+
+   #Paste the following:
+   export OS_TENANT_NAME=project_one
+   export OS_USERNAME=user_one
+   export OS_PASSWORD=user_one
+   export OS_AUTH_URL="http://192.168.100.51:5000/v2.0/"
+
+   source creds_proj_one
+
+* Start by allocating a floating ip to the project one tenant::
+
+   quantum floatingip-create ext_net
+
+* Start a VM::
+
+   nova --no-cache boot --image $id_myFirstImage --flavor 1 my_first_vm 
+
+* pick the id of the port corresponding to your VM::
+
+   quantum port-list
+
+* Associate the floating IP to your VM::
+
+   quantum floatingip-associate $put_id_floating_ip $put_id_vm_port
+
+That's it ! ping your VM and enjoy your OpenStack.
 
 6. Licensing
 ============
