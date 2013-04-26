@@ -310,6 +310,17 @@ Status: On Going Work
    admin_user = quantum
    admin_password = service_pass
 
+* Update the /etc/quantum/quantum.conf::
+
+   [keystone_authtoken]
+   auth_host = 10.10.10.51
+   auth_port = 35357
+   auth_protocol = http
+   admin_tenant_name = service
+   admin_user = quantum
+   admin_password = service_pass
+   signing_dir = /var/lib/quantum/keystone-signing
+
 * Restart the quantum server::
 
    service quantum-server restart
@@ -615,14 +626,6 @@ Status: On Going Work
    local_ip = 10.20.20.52
    enable_tunneling = True
 
-* In addition, update the /etc/quantum/l3_agent.ini by pasting this at the end of the file::
-
-   auth_url = http://10.10.10.51:35357/v2.0
-   auth_region = RegionOne
-   admin_tenant_name = service
-   admin_user = quantum
-   admin_password = service_pass
-
 * Update /etc/quantum/metadata_agent.ini::
    
    # The Quantum user information for accessing the Quantum API.
@@ -643,6 +646,17 @@ Status: On Going Work
 * Make sure that your rabbitMQ IP in /etc/quantum/quantum.conf is set to the controller node::
 
    rabbit_host = 10.10.10.51
+
+   #And update the keystone_authtoken section
+
+   [keystone_authtoken]
+   auth_host = 10.10.10.51
+   auth_port = 35357
+   auth_protocol = http
+   admin_tenant_name = service
+   admin_user = quantum
+   admin_password = service_pass
+   signing_dir = /var/lib/quantum/keystone-signing
 
 * Restart all the services::
 
@@ -815,6 +829,17 @@ Status: On Going Work
 * Make sure that your rabbitMQ IP in /etc/quantum/quantum.conf is set to the controller node::
    
    rabbit_host = 10.10.10.51
+
+   #And update the keystone_authtoken section
+
+   [keystone_authtoken]
+   auth_host = 10.10.10.51
+   auth_port = 35357
+   auth_protocol = http
+   admin_tenant_name = service
+   admin_user = quantum
+   admin_password = service_pass
+   signing_dir = /var/lib/quantum/keystone-signing
 
 * Restart all the services::
 
