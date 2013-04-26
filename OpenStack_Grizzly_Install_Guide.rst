@@ -169,10 +169,6 @@ Status: Stable
 
    connection = mysql://keystoneUser:keystonePass@10.10.100.51/keystone
 
-* Modify the keystone token type in the /etc/keystone/keystone.conf::
-
-   token_format = UUID
-
 * Restart the identity service then synchronize the database::
 
    service keystone restart
@@ -334,25 +330,44 @@ Status: Stable
 * Edit the /etc/quantum/l3_agent.ini::
 
    interface_driver = quantum.agent.linux.interface.BridgeInterfaceDriver
-   use_namespaces = False
 
-   # Paste this at the end of the file
+* Update the /etc/quantum/quantum.conf::
 
-   auth_url = http://10.10.100.51:35357/v2.0 
+   [keystone_authtoken]
+   auth_host = 10.10.100.51
+   auth_port = 35357
+   auth_protocol = http
+   admin_tenant_name = service
+   admin_user = quantum
+   admin_password = service_pass
+   signing_dir = /var/lib/quantum/keystone-signing
+
+* Edit the /etc/quantum/dhcp_agent.ini::
+
+   interface_driver = quantum.agent.linux.interface.BridgeInterfaceDriver
+
+* Update /etc/quantum/metadata_agent.ini::
+   
+   # The Quantum user information for accessing the Quantum API.
+   auth_url = http://10.10.100.51:35357/v2.0
    auth_region = RegionOne
    admin_tenant_name = service
    admin_user = quantum
    admin_password = service_pass
 
-* Edit the /etc/quantum/dhcp_agent.ini::
+   # IP address used by Nova metadata server
+   nova_metadata_ip = 10.10.100.51
 
-   interface_driver = quantum.agent.linux.interface.BridgeInterfaceDriver
-   use_namespaces = False
+   # TCP Port used by Nova metadata server
+   nova_metadata_port = 8775
+
+   metadata_proxy_shared_secret = helloOpenStack
 
 * Restart all quantum services::
 
    cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
    service dnsmasq restart
+
 * Note: 'dnsmasq' fails to restart if already a service is running on port 53. In that case, kill that service before 'dnsmasq' restart
 
 6. Nova
@@ -462,7 +477,11 @@ Status: Stable
    novncproxy_port=6080
    vncserver_proxyclient_address=10.10.100.51
    vncserver_listen=0.0.0.0
-
+   
+   # Metadata
+   service_quantum_metadata_proxy = True
+   quantum_metadata_proxy_shared_secret = helloOpenStack
+   
    # Network settings
    network_api_class=nova.network.quantumv2.api.API
    quantum_url=http://10.10.100.51:9696
@@ -593,9 +612,9 @@ Status: Stable
 
    apt-get install openstack-dashboard memcached
 
-* Update /etc/openstack-dashboard/local_settings.py::
+* If you don't like the OpenStack ubuntu theme, you can remove the package to disable it::
 
-   COMPRESS_OFFLINE = False 
+   dpkg --purge openstack-dashboard-ubuntu-theme
 
 * Reload Apache and memcached::
 
@@ -628,10 +647,6 @@ To start your first VM, we first need to create a new tenant, user and internal 
 * Create a router for the new tenant::
 
    quantum router-create --tenant-id $put_id_of_project_one router_proj_one
-
-* Edit the /etc/quantum/l3_agent.ini to update the router_id's variable::
-
-   router_id = $router_proj_one_id
 
 * Add the router to the subnet::
 
