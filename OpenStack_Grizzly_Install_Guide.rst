@@ -400,7 +400,6 @@ Status: Stable
    # Cinder #
    volume_api_class=nova.volume.cinder.API
    osapi_volume_listen_port=5900
-   cinder_catalog_info=volume:cinder:internalURL 
 
 * Synchronize your database::
 
@@ -456,6 +455,7 @@ Status: Stable
    volume_group = cinder-volumes
    verbose = True
    auth_strategy = keystone
+   iscsi_ip_address=10.10.10.51
 
 * Then, synchronize your database::
 
@@ -926,7 +926,7 @@ Status: Stable
    # Cinder #
    volume_api_class=nova.volume.cinder.API
    osapi_volume_listen_port=5900
-   iscsi_ip_address=10.10.10.51 
+   cinder_catalog_info=volume:cinder:internalURL
 
 * Restart nova-* services::
 
