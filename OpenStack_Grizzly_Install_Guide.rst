@@ -4,7 +4,7 @@
 
 :Version: 1.0
 :Source: https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide
-:Keywords: Multi node, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, OpenVSwitch, KVM, Ubuntu Server 12.04 (64 bits).
+:Keywords: Multi node, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, OpenVSwitch, KVM, Ubuntu Server 12.04/13.04 (64 bits).
 
 Authors
 ==========
@@ -69,11 +69,11 @@ Status: On Going Work
 2.1. Preparing Ubuntu
 -----------------
 
-* After you install Ubuntu 12.04 Server 64bits, Go in sudo mode and don't leave it until the end of this guide::
+* After you install Ubuntu 12.04 or 13.04 Server 64bits, Go in sudo mode and don't leave it until the end of this guide::
 
    sudo su
 
-* Add Grizzly repositories::
+* Add Grizzly repositories[Only for ubuntu 12.04]::
 
    apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
