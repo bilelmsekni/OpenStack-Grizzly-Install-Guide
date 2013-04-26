@@ -2,7 +2,7 @@
   OpenStack Grizzly Install Guide
 ==========================================================
 
-:Version: 1.0
+:Version: 2.0
 :Source: https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide
 :Keywords: Multi node, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, OpenVSwitch, KVM, Ubuntu Server 12.04/13.04 (64 bits).
 
@@ -46,7 +46,7 @@ OpenStack Grizzly Install Guide is an easy and tested way to create your own Ope
 
 If you like it, don't forget to star it !
 
-Status: On Going Work
+Status: Stable
 
 
 1. Requirements
