@@ -18,7 +18,7 @@ Contributors
 
  Houssem Medhioub <houssem.medhioub@it-sudparis.eu> Djamal Zeghlache <djamal.zeghlache@telecom-sudparis.eu>
  Sandeep Raman  <sandeepr@hp.com>        Sam Stoelinga <sammiestoel@gmail.com>
- Anil Vishnoi <vishnoianil@gmail.com>
+ Anil Vishnoi <vishnoianil@gmail.com>    Gangur Hrushikesh
 =================================================== =======================================================
 
 Wana contribute ? Read the guide, send your contribution and get your name listed ;)
@@ -389,7 +389,8 @@ Status: On Going Work
    # Cinder #
    volume_api_class=nova.volume.cinder.API
    osapi_volume_listen_port=5900
-    
+   cinder_catalog_info=volume:cinder:internalURL 
+
 * Synchronize your database::
 
    nova-manage db sync
@@ -444,7 +445,6 @@ Status: On Going Work
    volume_group = cinder-volumes
    verbose = True
    auth_strategy = keystone
-   #osapi_volume_listen_port=5900
 
 * Then, synchronize your database::
 
@@ -904,6 +904,7 @@ Status: On Going Work
    # Cinder #
    volume_api_class=nova.volume.cinder.API
    osapi_volume_listen_port=5900
+   iscsi_ip_address=10.10.10.51 
 
 * Restart nova-* services::
 
