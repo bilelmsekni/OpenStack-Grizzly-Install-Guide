@@ -73,7 +73,7 @@ Status: On Going Work
 
    sudo su
 
-* Add Grizzly repositories[Only for ubuntu 12.04]::
+* Add Grizzly repositories [Only for Ubuntu 12.04]::
 
    apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
@@ -512,11 +512,11 @@ Status: On Going Work
 3.1. Preparing the Node
 ------------------
 
-* After you install Ubuntu 12.04 Server 64bits, Go in sudo mode::
+* After you install Ubuntu 12.04 or 13.04 Server 64bits, Go in sudo mode::
 
    sudo su
 
-* Add Grizzly repositories::
+* Add Grizzly repositories [Only for Ubuntu 12.04]::
 
    apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
@@ -687,11 +687,11 @@ Status: On Going Work
 4.1. Preparing the Node
 ------------------
 
-* After you install Ubuntu 12.04 Server 64bits, Go in sudo mode::
+* After you install Ubuntu 12.04 or 13.04 Server 64bits, Go in sudo mode::
 
    sudo su
 
-* Add Grizzly repositories::
+* Add Grizzly repositories [Only for Ubuntu 12.04]::
 
    apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
