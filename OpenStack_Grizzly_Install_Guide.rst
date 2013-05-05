@@ -997,6 +997,11 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
    source creds_proj_one
 
+* Add this security rules to make your VMs pingable::
+
+   nova --no-cache secgroup-add-rule default icmp -1 -1 0.0.0.0/0
+   nova --no-cache secgroup-add-rule default tcp 22 22 0.0.0.0/0
+
 * Start by allocating a floating ip to the project one tenant::
 
    quantum floatingip-create ext_net
