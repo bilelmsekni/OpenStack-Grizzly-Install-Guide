@@ -85,7 +85,6 @@ This OpenStack Grizzly Install Guide is an easy and tested way to create your ow
 
    download nvp-ovs-<version_string>-ubuntu_precise_amd64.gz
    tar -xzvf nvp-ovs*.gz
-   cd nvp-ovs
    dpkg -i openvswitch-*.deb
    dpkg -i nicira-ovs-hypervisor-node*.deb
    ovs-integrate init
