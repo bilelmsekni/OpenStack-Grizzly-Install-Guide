@@ -127,6 +127,9 @@ This OpenStack Grizzly Install Guide is an easy and tested way to create your ow
 
 * Register this Hypervisor Transport Node (Open vSwitch) with Nicira NVP::
 
+   # Set the open vswitch manager address
+   ovs-vsctl set-manager ssl:<IP Address of one of your Nicira NVP controllers>
+
    # Get the client pki cert
    cat /etc/openvswitch/ovsclient-cert.pem
 
