@@ -817,7 +817,7 @@ You should also be able to do all of these things using the OpenStack dashboard 
 
    service libvirt-bin restart
 
-10.4. OpenVSwitch
+10.4. Open vSwitch
 ------------------
 
 * Install Open vSwitch (Use the Nicira version from the nicira.com support web site)::
@@ -926,7 +926,7 @@ You should also be able to do all of these things using the OpenStack dashboard 
    compute_scheduler_driver=nova.scheduler.simple.SimpleScheduler
    rabbit_host=10.127.1.200
    nova_url=http://10.127.1.200:8774/v1.1/
-   sql_connection=mysql://novaUser:novaPass@10.127.4.210/nova
+   sql_connection=mysql://novaUser:novaPass@10.127.1.200/nova
    root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 
    # Auth
@@ -946,12 +946,12 @@ You should also be able to do all of these things using the OpenStack dashboard 
 
    # Network settings
    network_api_class=nova.network.quantumv2.api.API
-   quantum_url=http://10.127.4.2-0:9696
+   quantum_url=http://10.127.1.200:9696
    quantum_auth_strategy=keystone
    quantum_admin_tenant_name=service
    quantum_admin_username=quantum
    quantum_admin_password=service_pass
-   quantum_admin_auth_url=http://10.127.4.200:35357/v2.0
+   quantum_admin_auth_url=http://10.127.1.200:35357/v2.0
    libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
    linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
    firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
