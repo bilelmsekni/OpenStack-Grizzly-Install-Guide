@@ -1,5 +1,5 @@
 ==========================================================
-  OpenStack Grizzly Install Guide
+  OpenStack Grizzly-Nicira NVP Install Guide
 ==========================================================
 
 :Version: 1.0.0
