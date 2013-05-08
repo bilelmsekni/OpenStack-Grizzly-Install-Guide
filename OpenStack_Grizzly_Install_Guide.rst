@@ -893,7 +893,7 @@ You should also be able to do all of these things using the OpenStack dashboard 
 
    [filter:authtoken]
    paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
-   auth_host = 10.127.1.201
+   auth_host = 10.127.1.200
    auth_port = 35357
    auth_protocol = http
    admin_tenant_name = service
