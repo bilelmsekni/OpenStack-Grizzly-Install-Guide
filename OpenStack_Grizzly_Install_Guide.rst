@@ -1,5 +1,5 @@
 ==========================================================
-  OpenStack Grizzly Install Guide (with Nicira NVP)
+  OpenStack Grizzly Install Guide
 ==========================================================
 
 :Version: 1.0.0
@@ -83,44 +83,44 @@ This OpenStack Grizzly Install Guide is an easy and tested way to create your ow
 
 * Install Open vSwitch (Use the Nicira version from the nicira.com support web site)::
 
-  download nvp-ovs-<version_string>-ubuntu_precise_amd64.gz
-  tar -xzvf nvp-ovs*.gz
-  cd nvp-ovs
-  dpkg -i openvswitch-*.deb
-  dpkg -i nicira-ovs-hypervisor-node*.deb
-  ovs-integrate init
-  ovs-integrate nics-to-bridge eth0 eth1
+   download nvp-ovs-<version_string>-ubuntu_precise_amd64.gz
+   tar -xzvf nvp-ovs*.gz
+   cd nvp-ovs
+   dpkg -i openvswitch-*.deb
+   dpkg -i nicira-ovs-hypervisor-node*.deb
+   ovs-integrate init
+   ovs-integrate nics-to-bridge eth0 eth1
   
-  # Add the following to /etc/rc.local before 'exit 0'
-  ifconfig eth0 0.0.0.0 up
-  ifconfig breth0 10.127.1.200 netmask 255.255.255.0 up
+   # Add the following to /etc/rc.local before 'exit 0'
+   ifconfig eth0 0.0.0.0 up
+   ifconfig breth0 10.127.1.200 netmask 255.255.255.0 up
 
-  ifconfig eth1 0.0.0.0 up
-  ifconfig breth1 10.10.1.200 netmask 255.255.255.0 up
+   ifconfig eth1 0.0.0.0 up
+   ifconfig breth1 10.10.1.200 netmask 255.255.255.0 up
 
-  route add default gw 10.127.1.1
+   route add default gw 10.127.1.1
 
 * Verify Open vSwitch configuration to this point::
 
-  ovs-vsctl show
+   ovs-vsctl show
 
-  # you should have something like this
+   # you should have something like this
 
-  Bridge "breth1"
+   Bridge "breth1"
       fail_mode: standalone
       Port "eth1"
           Interface "eth1"
       Port "breth1"
           Interface "breth1"
               type: internal
-  Bridge "breth0"
+   Bridge "breth0"
       fail_mode: standalone
       Port "breth0"
           Interface "breth0"
               type: internal
       Port "eth0"
           Interface "eth0"
-  Bridge br-int
+   Bridge br-int
       fail_mode: secure
       Port br-int
           Interface br-int
@@ -128,17 +128,17 @@ This OpenStack Grizzly Install Guide is an easy and tested way to create your ow
 
 * Register this Hypervisor Transport Node (Open vSwitch) with Nicira NVP::
 
-  # Get the client pki cert
-  cat /etc/openvswitch/ovsclient-cert.pem
+   # Get the client pki cert
+   cat /etc/openvswitch/ovsclient-cert.pem
 
-  # Copy the contents of the output including the BEGIN and END CERTIFICATE lines and be prepared to paste this into NVP manager
-  # In NVP Manager add a new Hypervisor, follow the prompts and paste the client certificate when prompted
-  # Please review the NVP User Guide for details on adding Hypervisor transport nodes to NVP for more information on this step
+   # Copy the contents of the output including the BEGIN and END CERTIFICATE lines and be prepared to paste this into NVP manager
+   # In NVP Manager add a new Hypervisor, follow the prompts and paste the client certificate when prompted
+   # Please review the NVP User Guide for details on adding Hypervisor transport nodes to NVP for more information on this step
 
 * Reboot the server to and make sure you still have network connectivity::
 
-  # an ifconfig should reveal eth0, eth1 interfaces that do not have IP addresses as well as breth0 and breth1 interfaces that do have IP addresses
-  # you should be able to ping your upstream gateway 10.127.1.1, etc.
+   # an ifconfig should reveal eth0, eth1 interfaces that do not have IP addresses as well as breth0 and breth1 interfaces that do have IP addresses
+   # you should be able to ping your upstream gateway 10.127.1.1, etc.
 
 2.3. MySQL & RabbitMQ
 ------------
