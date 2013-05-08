@@ -709,6 +709,9 @@ You should also be able to do all of these things using the OpenStack dashboard 
 10. Add another Compute Node
 =============================
 
+:Node Role: NICs
+:Compute Node: eth0 (10.127.1.201), eth1 (10.10.1.201)
+
 10.1. Preparing the Node
 ------------------
 
