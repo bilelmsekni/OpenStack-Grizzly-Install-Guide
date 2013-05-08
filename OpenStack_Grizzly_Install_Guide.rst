@@ -119,6 +119,17 @@ Status: Stable
    sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
    service mysql restart
 
+2.4. RabbitMQ
+-------------------
+
+* Install RabbitMQ::
+
+   apt-get install -y rabbitmq-server 
+
+* Install NTP service::
+
+   apt-get install -y ntp
+
 * Create these databases::
 
    mysql -u root -p
@@ -144,17 +155,6 @@ Status: Stable
    GRANT ALL ON cinder.* TO 'cinderUser'@'%' IDENTIFIED BY 'cinderPass';
 
    quit;
-
-2.4. RabbitMQ
--------------------
-
-* Install RabbitMQ::
-
-   apt-get install -y rabbitmq-server 
-
-* Install NTP service::
-
-   apt-get install -y ntp
  
 2.5. Others
 -------------------
