@@ -88,7 +88,6 @@ This OpenStack Grizzly Install Guide is an easy and tested way to create your ow
    apt-get install -y dkms libssl0.9.8
    dpkg -i openvswitch-*.deb
    dpkg -i nicira-ovs-hypervisor-node*.deb
-   ovs-integrate init
    ovs-integrate nics-to-bridge eth0 eth1
   
    # Add the following to /etc/rc.local before 'exit 0'
