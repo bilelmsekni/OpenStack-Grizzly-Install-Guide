@@ -368,7 +368,8 @@ This OpenStack Grizzly Install Guide is an easy and tested way to create your ow
    #  the name can be anything you want it just distinguishes multiple cluster definitions
    [CLUSTER:<name of your instance>]
    default_tz_uuid = <UUID of the Transport Zone you want to use from your NVP instance>
-   default_l3_gw_service_uuid = <UUID of the L3 Gateway Service from your NVP instance>
+   default_l3_gw_service_uuid = <UUID of the default L3 Gateway Service from your NVP instance>
+   default_l2_gw_service_uuid = <UUID of the default L2 Gateway Service> # Optional if not using this feature
    nvp_controller_connection=<IP Address of Controller 1 from your NVP instance>:443:admin:admin:30:10:2:2
    nvp_controller_connection=<IP Address of Controller 2 from your NVP instance>:443:admin:admin:30:10:2:2
    nvp_controller_connection=<IP Address of Controller 3 from your NVP instance>:443:admin:admin:30:10:2:2
@@ -907,7 +908,7 @@ You should also be able to do all of these things using the OpenStack dashboard 
    auth_version = v2.0
 
 * Edit /etc/nova/nova-compute.conf file ::
-   
+
    [DEFAULT]
    libvirt_type=kvm
    compute_driver=libvirt.LibvirtDriver
@@ -955,11 +956,12 @@ You should also be able to do all of these things using the OpenStack dashboard 
    quantum_admin_username=quantum
    quantum_admin_password=service_pass
    quantum_admin_auth_url=http://10.127.1.200:35357/v2.0
-   libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
+   libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtOpenVswitchDriver
    linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
-   firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
+   firewall_driver=nova.virt.firewall.NoopFirewallDriver
+   security_group_api=quantum
 
-   #Metadata
+   # Metadata
    service_quantum_metadata_proxy = True
    quantum_metadata_proxy_shared_secret = helloOpenStack
 
