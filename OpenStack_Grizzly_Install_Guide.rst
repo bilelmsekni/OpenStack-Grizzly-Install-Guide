@@ -299,6 +299,10 @@ Status: Stable
    tunnel_id_ranges = 1:1000
    enable_tunneling = True
 
+   #Firewall driver for realizing quantum security group function
+   [SECURITYGROUP]
+   firewall_driver = quantum.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
+
 * Edit /etc/quantum/api-paste.ini ::
 
    [filter:authtoken]
@@ -385,8 +389,12 @@ Status: Stable
    quantum_admin_auth_url=http://10.10.10.51:35357/v2.0
    libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
    linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
-   firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
-   
+   #If you want Quantum + Nova Security groups
+   firewall_driver=nova.virt.firewall.NoopFirewallDriver
+   security_group_api=quantum
+   #If you want Nova Security groups only, comment the two lines above and uncomment line -1-.
+   #-1-firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
+
    #Metadata
    service_quantum_metadata_proxy = True
    quantum_metadata_proxy_shared_secret = helloOpenStack
@@ -623,6 +631,10 @@ Status: Stable
    local_ip = 10.20.20.52
    enable_tunneling = True
 
+   #Firewall driver for realizing quantum security group function
+   [SECURITYGROUP]
+   firewall_driver = quantum.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
+
 * Update /etc/quantum/metadata_agent.ini::
    
    # The Quantum user information for accessing the Quantum API.
@@ -822,6 +834,10 @@ Status: Stable
    tunnel_bridge = br-tun
    local_ip = 10.20.20.53
    enable_tunneling = True
+   
+   #Firewall driver for realizing quantum security group function
+   [SECURITYGROUP]
+   firewall_driver = quantum.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
 
 * Make sure that your rabbitMQ IP in /etc/quantum/quantum.conf is set to the controller node::
    
@@ -911,7 +927,11 @@ Status: Stable
    quantum_admin_auth_url=http://10.10.10.51:35357/v2.0
    libvirt_vif_driver=nova.virt.libvirt.vif.LibvirtHybridOVSBridgeDriver
    linuxnet_interface_driver=nova.network.linux_net.LinuxOVSInterfaceDriver
-   firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
+   #If you want Quantum + Nova Security groups
+   firewall_driver=nova.virt.firewall.NoopFirewallDriver
+   security_group_api=quantum
+   #If you want Nova Security groups only, comment the two lines above and uncomment line -1-.
+   #-1-firewall_driver=nova.virt.libvirt.firewall.IptablesFirewallDriver
    
    #Metadata
    service_quantum_metadata_proxy = True
