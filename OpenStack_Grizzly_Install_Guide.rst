@@ -3,7 +3,7 @@
 ==========================================================
 
 :Version: 1.0
-:Source: https://github.com/rflax/OpenStack-Grizzly-Install-Guide
+:Source: https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide
 :Keywords: Single node OpenStack, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, Nicira, NVP, KVM, Ubuntu Server 12.04 (64 bits).
 
 
