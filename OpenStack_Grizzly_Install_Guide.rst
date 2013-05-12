@@ -375,6 +375,7 @@ This OpenStack Grizzly Install Guide is an easy and tested way to create your ow
    nvp_controller_connection=<IP Address of Controller 3 from your NVP instance>:443:admin:admin:30:10:2:2
 
 * Verify your NVP configuration::
+
    # run quantum-check-nvp-config to verify your nvp.ini configuration
    quantum-check-nvp-config /etc/quantum/plugins/nicira/nvp.ini
 
@@ -405,6 +406,7 @@ This OpenStack Grizzly Install Guide is an easy and tested way to create your ow
    metadata_proxy_shared_secret = helloOpenStack
 
 * Update /etc/sudoers
+  
   # add the following entry for Quantum
   quantum ALL=(ALL) NOPASSWD:ALL
 
