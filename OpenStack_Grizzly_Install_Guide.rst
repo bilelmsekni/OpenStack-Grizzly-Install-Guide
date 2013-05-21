@@ -669,7 +669,7 @@ Status: Stable
 
 * Edit /etc/sudoers to give it full access like this (This is unfortunatly mandatory) ::
 
-   sudo visudo
+   nano /etc/sudoers/sudoers.d/quantum_sudoers
    
    #Modify the quantum user
    quantum ALL=NOPASSWD: ALL
