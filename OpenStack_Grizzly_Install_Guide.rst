@@ -635,6 +635,18 @@ Status: Stable
    [SECURITYGROUP]
    firewall_driver = quantum.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
 
+* Append the following to the end of /etc/quantum/dhcp_agent.ini (`bug #1170155`_)::
+
+   dnsmasq_config_file=/etc/quantum/dnsmasq-quantum.conf
+
+.. _bug #1170155: https://bugs.launchpad.net/nova/+bug/1170155
+
+* Create file /etc/quantum/dnsmasq-quantum.conf with the following content::
+
+   # MTU configuration (bug #1170155)
+   # https://bugs.launchpad.net/nova/+bug/1170155
+   dhcp-option-force=26,1400
+
 * Update /etc/quantum/metadata_agent.ini::
    
    # The Quantum user information for accessing the Quantum API.
