@@ -2,7 +2,7 @@
   OpenStack Grizzly Install Guide
 ==========================================================
 
-:Version: 2.0
+:Version: 2.0.1
 :Source: https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide
 :Keywords: Multi node, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, OpenVSwitch, KVM, Ubuntu Server 12.04/13.04 (64 bits).
 
@@ -697,6 +697,23 @@ Status: Stable
 
    #If you want to get internet connection back, you can assign the eth2's IP address to the br-ex in the /etc/network/interfaces file.
 
+* Permanent up state of the bridges :
+   
+   # to end of /etc/network/interface
+   
+   auto br-ex 
+   iface br-ex inet static 
+   address 192.168.100.52
+   netmask 255.255.255.0
+  
+   # edit /etc/rc.local above "exit 0":
+   
+   sleep 15
+   ifconfig br-int up
+   ifconfig br-tun up
+  
+   
+
 4. Compute Node
 =========================
 
@@ -819,6 +836,14 @@ Status: Stable
 
    #br-int will be used for VM integration	
    ovs-vsctl add-br br-int
+   
+
+* Permanent up state of the bridges :
+
+ # edit /etc/rc.local above "exit 0":
+  sleep 15
+  ifconfig br-int up
+  ifconfig br-tun up
 
 4.5. Quantum
 ------------------
