@@ -966,7 +966,7 @@ Status: Stable
 
 To start your first VM, we first need to create a new tenant, user and internal network.
 
-* Create a new tenant ::
+* Create a new tenant::
 
    keystone tenant-create --name project_one
 
@@ -981,7 +981,7 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
 * Create a new subnet inside the new tenant network::
 
-   quantum subnet-create --tenant-id $put_id_of_project_one net_proj_one 50.50.1.0/24
+   quantum subnet-create --tenant-id $put_id_of_project_one --name subnet_proj_one net_proj_one 50.50.1.0/24
 
 * Create a router for the new tenant::
 
@@ -994,7 +994,7 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
 * Add the router to the subnet::
 
-   quantum router-interface-add $put_router_proj_one_id_here $put_subnet_id_here
+   quantum router-interface-add router_proj_one subnet_proj_one
 
 * Restart all quantum services::
 
@@ -1002,15 +1002,15 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
 * Create an external network with the tenant id belonging to the admin tenant (keystone tenant-list to get the appropriate id)::
 
-   quantum net-create --tenant-id $put_id_of_admin_tenant ext_net --router:external=True
+   quantum net-create --tenant-id $put_id_of_admin_tenant net_ext --router:external=True
 
 * Create a subnet for the floating ips::
 
-   quantum subnet-create --tenant-id $put_id_of_admin_tenant --allocation-pool start=192.168.100.102,end=192.168.100.126 --gateway 192.168.100.1 ext_net 192.168.100.100/24 --enable_dhcp=False
+   quantum subnet-create --tenant-id $put_id_of_admin_tenant  --name subnet_ext --allocation-pool start=192.168.100.102,end=192.168.100.126 --gateway 192.168.100.1 net_ext 192.168.100.100/24 --enable_dhcp=False
 
 * Set your router's gateway to the external network:: 
 
-   quantum router-gateway-set $put_router_proj_one_id_here $put_id_of_ext_net_here
+   quantum router-gateway-set router_proj_one subnet_ext
 
 * Source creds relative to your project one tenant now::
 
@@ -1031,17 +1031,17 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
 * Start by allocating a floating ip to the project one tenant::
 
-   quantum floatingip-create ext_net
+   quantum floatingip-create net_ext
 
 * Start a VM::
 
    nova --no-cache boot --image $id_myFirstImage --flavor 1 my_first_vm 
 
-* pick the id of the port corresponding to your VM::
+* After the VM booting, if the floatingIP is not configured at the VM, then pick the id of the port corresponding to your VM::
 
    quantum port-list
 
-* Associate the floating IP to your VM::
+* And, associate the floating IP to your VM::
 
    quantum floatingip-associate $put_id_floating_ip $put_id_vm_port
 
