@@ -300,7 +300,7 @@ Status: Stable
 
 * Verify all Quantum components are running::
 
-   cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i status; done
+   cd /etc/init.d/; for i in $( ls quantum-* ); do service $i status; done
 
 * Edit the /etc/quantum/quantum.conf file::
 
@@ -365,7 +365,7 @@ Status: Stable
 
 * Restart all quantum services::
 
-   cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
+   cd /etc/init.d/; for i in $( ls quantum-* ); do service $i restart; done
    service dnsmasq restart
 
 * Note: 'dnsmasq' fails to restart if already a service is running on port 53. In that case, kill that service before 'dnsmasq' restart
@@ -515,7 +515,7 @@ Status: Stable
 
 * Restart nova-* services::
 
-   cd /etc/init.d/; for i in $( ls nova-* ); do sudo service $i restart; done   
+   cd /etc/init.d/; for i in $( ls nova-* ); do service $i restart; done   
 
 * Check for the smiling faces on nova-* services to confirm your installation::
 
@@ -599,11 +599,11 @@ Status: Stable
 
 * Restart the cinder services::
 
-   cd /etc/init.d/; for i in $( ls cinder-* ); do sudo service $i restart; done
+   cd /etc/init.d/; for i in $( ls cinder-* ); do service $i restart; done
 
 * Verify if cinder services are running::
 
-   cd /etc/init.d/; for i in $( ls cinder-* ); do sudo service $i status; done
+   cd /etc/init.d/; for i in $( ls cinder-* ); do service $i status; done
 
 8. Horizon
 ===========
@@ -654,7 +654,7 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
 * Restart all quantum services::
 
-   cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
+   cd /etc/init.d/; for i in $( ls quantum-* ); do service $i restart; done
 
 That's it ! Log on to your dashboard, create your secure key and modify your security groups then create your first VM.
 
