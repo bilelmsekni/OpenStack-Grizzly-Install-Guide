@@ -301,6 +301,40 @@ Status: Stable
    #br-ex is used to make to access the internet (not covered in this guide)
    ovs-vsctl add-br br-ex
 
+5.1.1. OpenVSwitch (Part2, Optional)
+------------------
+
+* This will guide you to setting up the br-ex interface. Edit the eth2 in /etc/network/interfaces to become like this::
+
+   # VM internet Access 
+   auto eth1 
+   iface eth1 inet manual 
+   up ifconfig $IFACE 0.0.0.0 up 
+   up ip link set $IFACE promisc on 
+   down ip link set $IFACE promisc off 
+   down ifconfig $IFACE down 
+
+* Add the eth1 to the br-ex::
+
+   #Internet connectivity will be lost after this step but this won't affect OpenStack's work
+   ovs-vsctl add-port br-ex eth1
+
+* Optional, If you want to get internet connection back, you can assign the eth1's IP address to the br-ex in the /etc/network/interfaces file::
+
+   auto br-ex
+   iface br-ex inet static
+   address 192.168.100.51
+   netmask 255.255.255.0
+   gateway 192.168.100.1
+   dns-nameservers 8.8.8.8
+
+* Note to VirtualBox users, you will likely be using host-only adapters for the private networking. You need to provide a route out of the host-only network to contact the outside world; egress is not supported by host-only adapters. This can be done by routing traffic from br-ex to an additional NAT'ed adapter that you can add. Run these commands (where NAT'ed adapter is eth2)::
+
+   iptables --table nat --append POSTROUTING --out-interface eth2 -j MASQUERADE
+   iptables --append FORWARD --in-interface br-ex -j ACCEPT
+
+To create the quantum external network you should then follow the multinode guide's section 5 on this. Note: when creating the external network, be sure to set the gateway IP to 192.168.100.51
+
 5.2. Quantum-*
 ------------------
 
