@@ -631,7 +631,7 @@ Status: Stable
 
 * To install horizon, proceed like this ::
 
-   apt-get install openstack-dashboard memcached
+   apt-get -y install openstack-dashboard memcached
 
 * If you don't like the OpenStack ubuntu theme, you can remove the package to disable it::
 
