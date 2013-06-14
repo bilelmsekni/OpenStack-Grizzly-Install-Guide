@@ -397,10 +397,6 @@ Status: Stable
 
    apt-get install -y kvm libvirt-bin pm-utils
 
-* Restart libvirt-bin and dbus, otherwise libvirt-bin will fail to start
-   
-   service dbus restart && service libvirt-bin restart
-
 * Edit the cgroup_device_acl array in the /etc/libvirt/qemu.conf file to::
 
    cgroup_device_acl = [
@@ -429,9 +425,10 @@ Status: Stable
 
    libvirtd_opts="-d -l"
 
-* Restart the libvirt service to load the new values::
+* Restart the libvirt service and dbus to load the new values::
 
-   service libvirt-bin restart
+   service dbus restart && service libvirt-bin restart 
+   
 
 6.2 Nova-*
 ------------------
