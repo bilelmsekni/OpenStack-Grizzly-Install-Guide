@@ -804,9 +804,9 @@ Status: Stable
 
    libvirtd_opts="-d -l"
 
-* Restart the libvirt service to load the new values::
+* Restart the libvirt service and dbus to load the new values::
 
-   service libvirt-bin restart
+    service dbus restart && service libvirt-bin restart
 
 4.4. OpenVSwitch
 ------------------
