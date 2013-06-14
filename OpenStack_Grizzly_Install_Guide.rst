@@ -18,7 +18,8 @@ Contributors
 
  Houssem Medhioub <houssem.medhioub@it-sudparis.eu> Djamal Zeghlache <djamal.zeghlache@telecom-sudparis.eu>
  Sandeep Raman  <sandeepr@hp.com>                   Sam Stoelinga <sammiestoel@gmail.com>
-
+ Andy Edmonds <edmo@zhaw.ch>
+ 
 =================================================== =======================================================
 
 Wana contribute ? Read the guide, send your contribution and get your name listed ;)
@@ -304,7 +305,7 @@ Status: Stable
 5.1.1. OpenVSwitch (Part2, Optional)
 ------------------
 
-* This will guide you to setting up the br-ex interface. Edit the eth2 in /etc/network/interfaces to become like this::
+* This will guide you to setting up the br-ex interface. Edit the eth1 in /etc/network/interfaces to become like this::
 
    # VM internet Access 
    auto eth1 
