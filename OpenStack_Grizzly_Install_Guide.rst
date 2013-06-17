@@ -334,7 +334,9 @@ Status: Stable
    iptables --table nat --append POSTROUTING --out-interface eth2 -j MASQUERADE
    iptables --append FORWARD --in-interface br-ex -j ACCEPT
 
-To create the quantum external network you should then follow the multinode guide's section 5 on this. Note: when creating the external network, be sure to set the gateway IP to 192.168.100.51
+To create the quantum external network you should then follow `the multinode guide's section 5 <https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide/blob/OVS_MultiNode/OpenStack_Grizzly_Install_Guide.rst#5-your-first-vm>`_ on this. Note: when creating the external network, be sure to set the gateway IP to 192.168.100.51
+
+
 
 5.2. Quantum-*
 ------------------
