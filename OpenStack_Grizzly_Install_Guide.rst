@@ -669,7 +669,8 @@ Status: Stable
 
 * Edit /etc/sudoers to give it full access like this (This is unfortunatly mandatory) ::
 
-   nano /etc/sudoers/sudoers.d/quantum_sudoers
+   nano /etc/sudoers/sudoers.d/quantum_sudoers 
+   **Note :** For Ubuntu 13.04 this file is located here : /etc/sudoers.d/quantum_sudoers
    
    #Modify the quantum user
    quantum ALL=NOPASSWD: ALL
