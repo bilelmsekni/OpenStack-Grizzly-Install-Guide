@@ -674,6 +674,8 @@ Status: Stable
    #Modify the quantum user
    quantum ALL=NOPASSWD: ALL
 
+  **Note :** For Ubuntu 13.04 the path is `/etc/sudoers.d/quantum_sudoers`
+  
 * Restart all the services::
 
    cd /etc/init.d/; for i in $( ls quantum-* ); do sudo service $i restart; done
