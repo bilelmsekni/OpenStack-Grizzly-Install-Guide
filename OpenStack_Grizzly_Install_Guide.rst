@@ -719,6 +719,8 @@ Status: Stable
    apt-get upgrade -y
    apt-get dist-upgrade -y
 
+* Reboot (you might have new kernel)
+
 * Install ntp service::
 
    apt-get install -y ntp
