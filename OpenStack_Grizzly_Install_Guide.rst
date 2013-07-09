@@ -670,6 +670,7 @@ Status: Stable
 * Edit /etc/sudoers/sudoers.d/quantum_sudoers to give it full access like this (This is unfortunatly mandatory) ::
 
    nano /etc/sudoers/sudoers.d/quantum_sudoers
+   # for Ubuntu 12.04 the location is /etc/sudoers.d/quantum_sudoers
    
    #Modify the quantum user
    quantum ALL=NOPASSWD: ALL
