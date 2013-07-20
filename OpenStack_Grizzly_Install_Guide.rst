@@ -511,6 +511,9 @@ Status: Stable
 
    service apache2 restart; service memcached restart
 
+* Check OpenStack Dashboard at http://192.168.100.51/horizon. We can login with the admin / admin_pass
+
+
 3. Network Node
 ================
 
