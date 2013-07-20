@@ -129,7 +129,7 @@ create_endpoint () {
   esac
 }
 
-for i in compute volume image object-store identity ec2 network; do
+for i in compute volume image identity ec2 network; do
   id=`mysql -h "$MYSQL_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" -ss -e "SELECT id FROM service WHERE type='"$i"';"` || exit 1
   create_endpoint $i $id
 done
