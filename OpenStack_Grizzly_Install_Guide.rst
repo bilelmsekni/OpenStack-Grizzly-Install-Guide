@@ -986,7 +986,7 @@ To start your first VM, we first need to create a new tenant, user and internal 
 
 * Create a new subnet inside the new tenant network::
 
-   quantum subnet-create --tenant-id $put_id_of_project_one net_proj_one 50.50.1.0/24
+   quantum subnet-create --tenant-id $put_id_of_project_one net_proj_one 50.50.1.0/24 --dns_nameservers list=true 8.8.8.7 8.8.8.8
 
 * Create a router for the new tenant::
 
