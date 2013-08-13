@@ -670,11 +670,11 @@ Status: Stable
    admin_password = service_pass
    signing_dir = /var/lib/quantum/keystone-signing
 
-* Edit /etc/sudoers.d/quantum_sudoers to give it full access like this (This is unfortunatly mandatory) ::
+* Edit the sudoers file /etc/sudoers to give to quatum user full access like this (This is unfortunatly mandatory) ::
 
-   nano /etc/sudoers.d/quantum_sudoers
+   visudo /etc/sudoers
    
-   #Modify the quantum user
+   #Add the quantum user
    quantum ALL=NOPASSWD: ALL
 
 * Restart all the services::
