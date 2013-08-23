@@ -589,6 +589,10 @@ Status: Stable
 3.4. OpenVSwitch (Part1)
 ------------------
 
+* Install kernel headers::
+  
+  apt-get install linux-headers-$(uname -r)
+
 * Install the openVSwitch::
 
    apt-get install -y openvswitch-switch openvswitch-datapath-dkms
