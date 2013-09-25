@@ -77,7 +77,7 @@ Status: Stable
 
 * After you install Ubuntu 12.04 Server 64bits, Go in sudo mode and don't leave it until the end of this guide::
 
-   sudo su
+   sudo -i
 
 * Add Grizzly repositories::
 
