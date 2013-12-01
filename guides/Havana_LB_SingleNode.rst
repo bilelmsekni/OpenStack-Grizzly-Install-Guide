@@ -285,7 +285,7 @@ Status: Stable
 
 * Verify all neutron components are running::
 
-   cd /etc/init.d/; for i in $( ls neutron-* ); do sudo service $i status; done
+   for i in $( ls /etc/init.d/neutron-* | xargs -n 1 basename ); do sudo service $i status; done
 
 * Edit the /etc/neutron/neutron.conf file::
 
