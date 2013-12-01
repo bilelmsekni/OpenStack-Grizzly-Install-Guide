@@ -17,7 +17,6 @@ Table of Contents
 
 ::
 
-  0. What is it?
   1. Requirements
   2. Preparing your node
   3. Keystone
@@ -30,15 +29,6 @@ Table of Contents
   10. Licensing
 
 
-0. What is it?
-==============
-
-OpenStack Havana Install Guide is an easy and tested way to create your own OpenStack platform. 
-
-If you like it, don't forget to star it !
-
-Status: Stable
-
 
 1. Requirements
 ====================
@@ -46,11 +36,9 @@ Status: Stable
 :Node Role: NICs
 :Single Node: eth0 (10.10.100.51), eth1 (192.168.100.51)
 
-**Note 1:** Multi node deployment is available on the OVS_MultiNode branch.
+**Note 1:** Always use dpkg -s <packagename> to make sure you are using Havana packages (version : 2013.2)
 
-**Note 2:** Always use dpkg -s <packagename> to make sure you are using Havana packages (version : 2013.1)
-
-**Note 3:** This is my current network architecture.
+**Note 2:** Instalation architecture.
 
 .. image:: http://i.imgur.com/JyMokiY.jpg
 
