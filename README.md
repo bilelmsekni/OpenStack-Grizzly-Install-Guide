@@ -1,4 +1,4 @@
-OpenStack-Install-Guides
+OpenStack Install Guides
 ===============================
 
 Install guides for various openstack configurations and versions 
