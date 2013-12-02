@@ -55,8 +55,8 @@ Table of Contents
 * Add Havana repositories::
 
    apt-get install ubuntu-cloud-keyring python-software-properties software-properties-common python-keyring
-   echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/Havana main >> /etc/apt/sources.list.d/Havana.list
-
+   sudo add-apt-repository cloud-archive:havana
+   
 * Update your system::
 
    apt-get update
