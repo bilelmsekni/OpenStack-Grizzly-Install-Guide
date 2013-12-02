@@ -257,7 +257,7 @@ Table of Contents
 
    glance image-list
 
-5. neutron
+5. Neutron
 =============
 
 * Install the neutron components::
