@@ -74,7 +74,7 @@ Status: Stable
    sudo su
 
 * Add Grizzly repositories [Only for Ubuntu 12.04]::
-
+
    apt-get install -y ubuntu-cloud-keyring 
    echo deb http://ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/grizzly main >> /etc/apt/sources.list.d/grizzly.list
 
@@ -111,8 +111,7 @@ Status: Stable
 ------------
 
 * Install MySQL::
-
-   apt-get install -y mysql-server python-mysqldb
+  apt-get install -y mysql-server python-mysqldb
 
 * Configure mysql to accept all incoming requests::
 
@@ -131,7 +130,10 @@ Status: Stable
    apt-get install -y ntp
 
 * Create these databases::
-
+  Notice: if you didn`t config the databases password when you install mysql, it is no need for you to input your 
+  password at the very first time you login in to the mysql, you can just push 'ENTER' to skip when it ask for password,
+  or it may prompt errors.
+  
    mysql -u root -p
    
    #Keystone
