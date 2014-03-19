@@ -1,18 +1,7 @@
-#!/bin/sh
-#
-# Keystone basic configuration 
-
-# Mainly inspired by https://github.com/openstack/keystone/blob/master/tools/sample_data.sh
-
-# Modified by Bilel Msekni / Institut Telecom
-#
-# Support: openstack@lists.launchpad.net
-# License: Apache Software License (ASL) 2.0
-#
-HOST_IP=10.10.100.51
+HOST_IP=192.168.119.43
 ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin_pass}
 SERVICE_PASSWORD=${SERVICE_PASSWORD:-service_pass}
-export SERVICE_TOKEN="ADMIN"
+export SERVICE_TOKEN="012345SECRET99TOKEN012345"
 export SERVICE_ENDPOINT="http://${HOST_IP}:35357/v2.0"
 SERVICE_TENANT_NAME=${SERVICE_TENANT_NAME:-service}
 
