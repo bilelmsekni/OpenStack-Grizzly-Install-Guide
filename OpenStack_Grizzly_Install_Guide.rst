@@ -1063,7 +1063,7 @@ To view a copy of this license, visit [ http://creativecommons.org/licenses/by/3
 7. Contacts
 ===========
 
-Bilel Msekni  : bilel.msekni@gmail.com
+Bilel Msekni  : msekni.bilel@gmail.com
 
 8. Credits
 =================
