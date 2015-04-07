@@ -669,7 +669,7 @@ To view a copy of this license, visit [ http://creativecommons.org/licenses/by/3
 11. Contacts
 ===========
 
-Bilel Msekni  : bilel.msekni@gmail.com
+Bilel Msekni  : msekni.bilel@gmail.com
 
 Sandeep J Raman : sandeepr@hp.com
 
