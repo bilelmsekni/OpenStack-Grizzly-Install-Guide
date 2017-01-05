@@ -83,6 +83,10 @@ Status: Stable
    apt-get update -y
    apt-get upgrade -y
    apt-get dist-upgrade -y
+   
+* Reboot your system::
+
+   shutdown -P -r now
 
 2.2. Networking
 ------------
@@ -423,15 +427,25 @@ Status: Stable
 
 * Install the required packages::
 
+   * Ubuntu 12.04::
+   
    apt-get install -y cinder-api cinder-scheduler cinder-volume iscsitarget open-iscsi iscsitarget-dkms
-
-* Configure the iscsi services::
-
+   # Configure the iscsi services::
    sed -i 's/false/true/g' /etc/default/iscsitarget
+   
+   * Ubuntu 13.04::
+   
+   apt-get install -y cinder-api cinder-scheduler cinder-volume open-iscsi
 
-* Restart the services::
+* Restart the services:
+
+   * Ubuntu 12.04::
    
    service iscsitarget start
+   service open-iscsi start
+   
+   * Ubuntu 13.04::
+   
    service open-iscsi start
 
 * Configure /etc/cinder/api-paste.ini like the following::
@@ -451,6 +465,8 @@ Status: Stable
 
 * Edit the /etc/cinder/cinder.conf to::
 
+   * Ubuntu 12.04::
+
    [DEFAULT]
    rootwrap_config=/etc/cinder/rootwrap.conf
    sql_connection = mysql://cinderUser:cinderPass@10.10.10.51/cinder
@@ -461,6 +477,21 @@ Status: Stable
    verbose = True
    auth_strategy = keystone
    iscsi_ip_address=10.10.10.51
+   
+   
+   * Ubuntu 13.04::
+   
+   [DEFAULT]
+   rootwrap_config=/etc/cinder/rootwrap.conf
+   sql_connection = mysql://cinderUser:cinderPass@10.10.10.51/cinder
+   api_paste_config = /etc/cinder/api-paste.ini
+   iscsi_helper=tgtadm
+   volume_name_template = volume-%s
+   volume_group = cinder-volumes
+   verbose = True
+   auth_strategy = keystone
+   iscsi_ip_address=10.10.10.51
+   rabbit_host=10.10.10.51
 
 * Then, synchronize your database::
 
@@ -790,11 +821,6 @@ Status: Stable
    "/dev/rtc", "/dev/hpet","/dev/net/tun"
    ]
 
-* Delete default virtual bridge ::
-
-   virsh net-destroy default
-   virsh net-undefine default
-
 * Enable live migration by updating /etc/libvirt/libvirtd.conf file::
 
    listen_tls = 0
@@ -812,6 +838,11 @@ Status: Stable
 * Restart the libvirt service and dbus to load the new values::
 
     service dbus restart && service libvirt-bin restart
+    
+* Delete default virtual bridge ::
+
+   virsh net-destroy default
+   virsh net-undefine default
 
 4.4. OpenVSwitch
 ------------------
