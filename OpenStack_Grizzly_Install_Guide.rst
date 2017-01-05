@@ -655,6 +655,19 @@ Status: Stable
 
    metadata_proxy_shared_secret = helloOpenStack
 
+* Create new file /etc/quantum/dnsmasq.conf::
+   
+   # reduce the MTU on the new instances to 1454
+   dhcp-option-force=26,1454
+   log-facility = /var/log/quantum/dnsmasq.log
+   log-dhcp
+   
+   # Change file's owner 
+   chown root:quantum /etc/quantum/dnsmasq.conf
+   
+   #Add line to /etc/quantum/dhcp_agent.ini
+   dnsmasq_config_file = /etc/quantum/dnsmasq.conf
+   
 * Make sure that your rabbitMQ IP in /etc/quantum/quantum.conf is set to the controller node::
 
    rabbit_host = 10.10.10.51
